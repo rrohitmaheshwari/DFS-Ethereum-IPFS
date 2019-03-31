@@ -40,12 +40,10 @@ class App extends Component {
                 {/*</pre>*/}
 
                 <Router history={history}>
-                    <div>
                         {!user ? <Route exact path="/" component={LoginPage}/> :
                             <Route exact path="/" component={HomePage}/>}
                         {!user ? <Route exact path="/signUp" component={SignUp}/> :
                             <Route exact path="/signUp" component={HomePage}/>}
-                    </div>
                 </Router>
 
             </div>

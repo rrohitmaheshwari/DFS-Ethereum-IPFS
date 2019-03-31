@@ -7,6 +7,9 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import configureStore from './store';
 
+/* Importing antd style sheet at Root Component */
+import 'antd/dist/antd.css';
+
 ReactDOM.render(
     <Provider store={configureStore()}>
         <App/>
