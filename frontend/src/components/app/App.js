@@ -2,27 +2,52 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './App.css';
 import { simpleAction } from '../../actions/simpleAction';
+import { Router, Route } from 'react-router-dom';
+import SignUp from '../signUp/SignUp'
+import HomePage from '../homePage/HomePage'
+import LoginPage from '../loginPage/LoginPage'
+import { history } from '../../helper/history.js';
 
 class App extends Component {
 
-    simpleAction = (event) => {
-        const { dispatch } = this.props;
-        
-        dispatch(simpleAction());
+    state = {
+        login: false
+    };
+
+    // simpleAction = (event) => {
+    //     const {dispatch} = this.props;
+    //
+    //     dispatch(simpleAction());
+    // }
+
+    componentDidMount() {
+
+        //check for login
+
     }
 
     render() {
-        const { simpleReducer } = this.props;
+        let user = this.state.login;
+        const {simpleReducer} = this.props;
         return (
             <div className="App">
-                Frontend
 
-                <button onClick={this.simpleAction}>Test redux action</button>
-                <pre>
-                 {
-                     JSON.stringify(simpleReducer)
-                 }
-                </pre>
+                {/*<button onClick={this.simpleAction}>Test redux action</button>*/}
+                {/*<pre>*/}
+                 {/*{*/}
+                     {/*JSON.stringify(simpleReducer)*/}
+                 {/*}*/}
+                {/*</pre>*/}
+
+                <Router history={history}>
+                    <div>
+                        {!user ? <Route exact path="/" component={LoginPage}/> :
+                            <Route exact path="/" component={HomePage}/>}
+                        {!user ? <Route exact path="/signUp" component={SignUp}/> :
+                            <Route exact path="/signUp" component={HomePage}/>}
+                    </div>
+                </Router>
+
             </div>
         );
     }
