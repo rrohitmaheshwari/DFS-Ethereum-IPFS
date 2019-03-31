@@ -6,10 +6,13 @@ import { simpleAction } from '../../actions/simpleAction';
 class App extends Component {
 
     simpleAction = (event) => {
-        this.props.simpleAction();
+        const { dispatch } = this.props;
+        
+        dispatch(simpleAction());
     }
 
     render() {
+        const { simpleReducer } = this.props;
         return (
             <div className="App">
                 Frontend
@@ -17,7 +20,7 @@ class App extends Component {
                 <button onClick={this.simpleAction}>Test redux action</button>
                 <pre>
                  {
-                     JSON.stringify(this.props)
+                     JSON.stringify(simpleReducer)
                  }
                 </pre>
             </div>
@@ -26,11 +29,11 @@ class App extends Component {
 }
 
 
-const mapStateToProps = state => ({
-    ...state
-})
-const mapDispatchToProps = dispatch => ({
-    simpleAction: () => dispatch(simpleAction())
-})
+function mapStateToProps(state) {
+    const {simpleReducer} = state;
+    return {
+        simpleReducer
+    };
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);
