@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    Form, Icon, Input, Button, Checkbox, Row, Col, Spin, message
+    Form, Icon, Input, Button, Row, Col, Spin, message
 } from 'antd';
 import web3 from '../../web3';
 import EthCrypto from 'eth-crypto';
@@ -16,7 +16,6 @@ class SignUp extends Component {
 
     async componentDidMount() {
         let accounts = await web3.eth.getAccounts();
-        console.log(accounts);
         if (accounts.length === 0) {
             message.error('Unable to access Metamask');
             this.setState({metamask: false})
@@ -70,12 +69,12 @@ class SignUp extends Component {
         catch (err) {
 //intial rendering errors & invalid private key error(while typing)
         }
-
-
-        console.log('publicKey');
-        console.log(publicKey);
-        console.log('address');
-        console.log(address);
+        //
+        //
+        // console.log('publicKey');
+        // console.log(publicKey);
+        // console.log('address');
+        // console.log(address);
 
         if (privateKey && privateKey.length !== 0) {
             validAddress = "error";
@@ -151,9 +150,12 @@ class SignUp extends Component {
                                 </Form.Item>
 
                                 <Form.Item label="Address" hasFeedback validateStatus={validAddress}
+
+                                           help={validAddress==="error" ?"Enter Valid Private Key":""}
+
                                            className="marginBottom0">
                                     <Input prefix={<Icon type="property-safety" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                           type="account" placeholder="No account selected" value={showAddress}
+                                           type="barcode" placeholder="No account selected" value={showAddress}
                                            disabled={true}/>
                                 </Form.Item>
 
