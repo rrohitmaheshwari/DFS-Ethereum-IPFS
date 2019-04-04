@@ -3,7 +3,7 @@ import {
     Form, Icon, Input, Button, Row, Col, Spin, message
 } from 'antd';
 import web3 from '../../web3';
-import EthCrypto from 'eth-crypto';
+import { history } from '../../helper/history.js';
 
 
 class LoginPage extends Component {
@@ -37,6 +37,7 @@ class LoginPage extends Component {
                 setTimeout(function () {
                     this.setState({loading: false});
                     message.success('Login Successfully');
+                    history.push('/home');
                 }.bind(this), 1000);
 
             }
