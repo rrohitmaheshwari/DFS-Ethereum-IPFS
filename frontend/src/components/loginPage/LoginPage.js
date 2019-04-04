@@ -36,7 +36,7 @@ class LoginPage extends Component {
 
                 setTimeout(function () {
                     this.setState({loading: false});
-                    message.success('Login Successfully');
+                    message.success('Logged in Successfully');
                     history.push('/home');
                 }.bind(this), 1000);
 

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import {
-    Layout, Menu, Avatar,Header
+    Layout, Menu, Avatar, Button , Icon
 } from 'antd';
+import { message } from "antd/lib/index";
+import { history } from "../../helper/history";
 
-const {Content, Sider, Footer} = Layout;
+const {Content, Sider, Footer , Header} = Layout;
 
 class HomePage extends Component {
 
@@ -17,23 +19,40 @@ class HomePage extends Component {
         this.setState({itemKey: e.key});
     }
 
+    logoutButton = () => {
+
+        message.success('Logged out Successfully');
+        history.push('/Login');
+
+    }
+
 
     render() {
         return (
             <div className="HomePage">
+
                 <Layout style={{minHeight: '100vh'}}>
+                    <Header style={{ background: '#fff'}} theme='light'>
+
+                            {/*<Avatar shape="square" size={64} icon="user"/>*/}
+                                <Icon type="gitlab" style={{fontSize: '60px',marginLeft:'17px'}}/>
+
+
+
+                        <Button type="primary" icon="poweroff" onClick={this.logoutButton} style={{float:'right',marginTop: '16px'}}>
+                            Logout!
+                        </Button>
+                    </Header>
                     <Layout>
                         <Sider width={200} style={{background: '#fff',  overflow: 'auto', height: '100vh', position: 'fixed', left: 0}}>
 
 
-                            <div className="alignCenter" style={{paddingTop: '10px'}}>
-                                <Avatar shape="square" size={64} icon="user"/>
-                            </div>
+
                             <Menu
                                 mode="inline"
                                 defaultSelectedKeys={['1']}
                                 onClick={this.handleClick}
-                                style={{height: '100%', borderRight: 0, padding: '25px 0px 0px 10px'}}
+                                style={{height: '100%', borderRight: 0, padding: '0px 0px 0px 10px'}}
                             >
                                 <Menu.Item key="1">Files</Menu.Item>
                                 <Menu.Item key="2">Profile</Menu.Item>
@@ -43,17 +62,10 @@ class HomePage extends Component {
                         </Sider>
                         <Layout style={{padding: '25px 24px 24px',marginLeft: 200}}>
 
-                            <div style={{
-                                background: '#fff', padding: 20, marginBottom: '10px',
-                            }}
-                            >
-                                {this.state.itemKey === '1' ? <h2>Files</h2> : ''}
-                                {this.state.itemKey === '2' ? <h2>Profile</h2> : ''}
-                                {this.state.itemKey === '3' ? <h2>Analytics</h2> : ''}
-                            </div>
+
 
                             <Content style={{
-                                background: '#fff', padding: 24, margin: 0, minHeight: 280,
+                                background: '#fff', padding: 24, minHeight: 280,
                             }}
                             >
                                 {this.state.itemKey === '1' ? 'Files' : ''}
