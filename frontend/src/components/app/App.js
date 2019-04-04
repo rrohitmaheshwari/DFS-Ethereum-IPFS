@@ -34,16 +34,18 @@ class App extends Component {
 
                 {/*<button onClick={this.simpleAction}>Test redux action</button>*/}
                 {/*<pre>*/}
-                 {/*{*/}
-                     {/*JSON.stringify(simpleReducer)*/}
-                 {/*}*/}
+                {/*{*/}
+                {/*JSON.stringify(simpleReducer)*/}
+                {/*}*/}
                 {/*</pre>*/}
 
                 <Router history={history}>
-                        {!user ? <Route exact path="/" component={LoginPage}/> :
-                            <Route exact path="/" component={HomePage}/>}
-                        {!user ? <Route exact path="/signUp" component={SignUp}/> :
-                            <Route exact path="/signUp" component={HomePage}/>}
+                    {!user ? <Route exact path="/" component={LoginPage}/> :
+                        <Route exact path="/" component={HomePage}/>}
+                    {!user ? <Route exact path="/signUp" component={SignUp}/> :
+                        <Route exact path="/signUp" component={HomePage}/>}
+                    {!user ? <Route exact path="/login" component={LoginPage}/> :
+                        <Route exact path="/login" component={HomePage}/>}
                 </Router>
 
             </div>

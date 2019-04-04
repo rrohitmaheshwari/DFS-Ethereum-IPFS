@@ -69,12 +69,7 @@ class SignUp extends Component {
         catch (err) {
 //intial rendering errors & invalid private key error(while typing)
         }
-        //
-        //
-        // console.log('publicKey');
-        // console.log(publicKey);
-        // console.log('address');
-        // console.log(address);
+
 
         if (privateKey && privateKey.length !== 0) {
             validAddress = "error";
