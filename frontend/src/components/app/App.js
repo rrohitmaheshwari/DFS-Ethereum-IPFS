@@ -46,8 +46,8 @@ class App extends Component {
                         <Route exact path="/signUp" component={HomePage}/>}
                     {!user ? <Route exact path="/login" component={LoginPage}/> :
                         <Route exact path="/login" component={HomePage}/>}
-                    {!user ? <Route exact path="/home" component={HomePage}/> :
-                        <Route exact path="/home" component={HomePage}/>}
+                    {!user ? <Route  path="/home" component={HomePage}/> :
+                        <Route  path="/home" component={HomePage}/>}
                 </Router>
 
             </div>

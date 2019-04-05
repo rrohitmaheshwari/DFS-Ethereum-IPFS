@@ -1,89 +1,170 @@
 import React, { Component } from 'react';
 import {
-    Layout, Menu, Avatar, Button , Icon
+    Layout, Menu, Avatar, Button, Icon
 } from 'antd';
 import { message } from "antd/lib/index";
 import { history } from "../../helper/history";
-const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
+import { Router, Route } from 'react-router-dom';
+import AllFile from "../files/AllFile";
+import ReceivedFile from "../files/ReceivedFile";
+import SentFile from "../files/SentFile";
+import Profile from "../profile/Profile";
+import Analytic from "../analytic/Analytic";
 
-const {Content, Sider, Footer , Header} = Layout;
+const SubMenu = Menu.SubMenu;
+
+
+const {Content, Sider, Footer, Header} = Layout;
 
 class HomePage extends Component {
 
     state = {
-        itemKey: '1'
+        itemKey: '1',
+        collapsed: false,
+    };
+
+
+    onCollapse = (collapsed) => {
+
+        this.setState({collapsed});
     };
 
 
     handleClick = (e) => {
-        console.log('click ', e);
+
+        //redirecting to render correct component
+
         this.setState({itemKey: e.key});
-    }
+        if (e.key === '1') {
+            history.push('/home/allFiles');
+        }
+        else if (e.key === '2') {
+            history.push('/home/receivedFiles');
+        }
+        else if (e.key === '3') {
+            history.push('/home/sentFiles');
+        }
+        else if (e.key === '4') {
+            history.push('/home/profile');
+        }
+        else if (e.key === '5') {
+            history.push('/home/analytic');
+        }
+    };
 
     logoutButton = () => {
 
         message.success('Logged out Successfully');
         history.push('/Login');
 
-    }
-
+    };
 
     render() {
+
+        let marginLeft = 200;
+        if (this.state.collapsed) {
+            marginLeft = 80;
+        }
+
+        let selectedKey = '1';
+
+        //logic to render correct selected menu item
+
+        switch (window.location.pathname) {
+            case '/home/allFiles':
+                selectedKey = '1';
+                break;
+
+            case '/home/receivedFiles':
+                selectedKey = '2';
+                break;
+
+            case '/home/sentFiles':
+                selectedKey = '3';
+                break;
+
+            case '/home/profile':
+                selectedKey = '4';
+                break;
+
+            case '/home/analytic':
+                selectedKey = '5';
+                break;
+
+            default:
+                history.push('/home/allFiles');
+                break;
+        }
+
+
         return (
             <div className="HomePage">
 
                 <Layout style={{minHeight: '100vh'}}>
-                    <Header style={{ background: '#fff'}} theme='light'>
+                    <Header style={{position: 'fixed', width: '100%', zIndex: 1, background: '#fff'}} theme='light'>
 
-                            {/*<Avatar shape="square" size={64} icon="user"/>*/}
-                                <Icon type="gitlab" style={{fontSize: '60px',marginLeft:'17px'}}/>
+                        {/*<Avatar shape="square" size={64} icon="user"/>*/}
+                        <Icon type="gitlab" style={{fontSize: '60px', marginLeft: '17px'}}/>
 
 
-
-                        <Button type="primary" icon="poweroff" onClick={this.logoutButton} style={{float:'right',marginTop: '16px'}}>
+                        <Button type="primary" icon="poweroff" onClick={this.logoutButton}
+                                style={{float: 'right', marginTop: '16px'}}>
                             Logout!
                         </Button>
                     </Header>
                     <Layout>
-                        <Sider width={200} style={{background: '#fff',  overflow: 'auto', height: '100vh', position: 'fixed', left: 0}}>
-
-
+                        <Sider width={200} style={{
+                            background: '#fff',
+                            overflow: 'auto',
+                            height: '100vh',
+                            position: 'fixed',
+                            left: 0,
+                            top: 64
+                        }}
+                               collapsible
+                               collapsed={this.state.collapsed}
+                               onCollapse={this.onCollapse}
+                               theme='light'
+                        >
 
 
                             <Menu
                                 onClick={this.handleClick}
-                                style={{height: '100%', borderRight: 0, padding: '0px 0px 0px 10px'}}
+                                style={{height: '100%'}}
                                 mode="inline"
-                                defaultSelectedKeys={['1']}
+                                defaultSelectedKeys={[selectedKey]}
                                 defaultOpenKeys={['sub1']}
                             >
-                                <SubMenu key="sub1" title={<span><Icon type="desktop" /><span>Files</span></span>}>
+                                <SubMenu key="sub1" title={<span><Icon type="desktop"/><span>Files</span></span>}>
 
-                                        <Menu.Item key="1"><span><Icon type="appstore" /><span>All</span></span></Menu.Item>
-                                        <Menu.Item key="2"><span><Icon type="download" /><span>Received</span></span></Menu.Item>
-                                        <Menu.Item key="3"><span><Icon type="upload" /><span>Sent</span></span></Menu.Item>
+                                    <Menu.Item key="1"><span><Icon type="appstore"/><span>All</span></span></Menu.Item>
+                                    <Menu.Item key="2"><span><Icon
+                                        type="download"/><span>Received</span></span></Menu.Item>
+                                    <Menu.Item key="3"><span><Icon type="upload"/><span>Sent</span></span></Menu.Item>
 
                                 </SubMenu>
-                                <Menu.Item key="4"><span><Icon type="smile" /><span>Profile</span></span></Menu.Item>
-                                <Menu.Item key="5"><span><Icon type="radar-chart" /><span>Analytics</span></span></Menu.Item>
+                                <Menu.Item key="4"><span><Icon type="smile"/><span>Profile</span></span></Menu.Item>
+                                <Menu.Item key="5"><span><Icon
+                                    type="radar-chart"/><span>Analytics</span></span></Menu.Item>
                             </Menu>
                         </Sider>
-                        <Layout style={{padding: '25px 24px 24px',marginLeft: 200}}>
-
-
-
+                        <Layout style={{padding: '25px 24px 24px', marginLeft: marginLeft, marginTop: 64}}>
                             <Content style={{
-                                background: '#fff', padding: 24, minHeight: 280,
+                                background: '#fff', padding: 24, minHeight: 280, margin: '0 16px'
                             }}
                             >
-                                {this.state.itemKey === '1' ? 'All Files' : ''}
-                                {this.state.itemKey === '2' ? 'Received Files' : ''}
-                                {this.state.itemKey === '3' ? 'Sent Files' : ''}
-                                {this.state.itemKey === '4' ? 'Profile' : ''}
-                                {this.state.itemKey === '5' ? 'Analytics' : ''}
+
+                                <Router history={history}>
+                                    <Route exact path="/home/allFiles" component={AllFile}/>
+                                    <Route exact path="/home/receivedFiles" component={ReceivedFile}/>
+                                    <Route exact path="/home/sentFiles" component={SentFile}/>
+                                    <Route exact path="/home/profile" component={Profile}/>
+                                    <Route exact path="/home/analytic" component={Analytic}/>
+
+                                </Router>
+
                             </Content>
-                            <Footer style={{ textAlign: 'center' }}>
+                            <Footer style={{textAlign: 'center'}}>
                                 Distributed File System using Blockchain © San Jose State University
                             </Footer>
                         </Layout>
