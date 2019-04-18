@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './App.css';
 import { simpleAction } from '../../actions/simpleAction';
-import { Router, Route } from 'react-router-dom';
+import { Router, Route, Switch} from 'react-router-dom';
 import SignUp from '../signUp/SignUp'
 import HomePage from '../homePage/HomePage'
 import LoginPage from '../loginPage/LoginPage'
+import InvalidPage from '../invalidPage/InvalidPage'
 import { history } from '../../helper/history.js';
 
 class App extends Component {
@@ -40,14 +41,18 @@ class App extends Component {
                 {/*</pre>*/}
 
                 <Router history={history}>
+                    <Switch>
                     {!user ? <Route exact path="/" component={LoginPage}/> :
                         <Route exact path="/" component={HomePage}/>}
                     {!user ? <Route exact path="/signUp" component={SignUp}/> :
                         <Route exact path="/signUp" component={HomePage}/>}
                     {!user ? <Route exact path="/login" component={LoginPage}/> :
                         <Route exact path="/login" component={HomePage}/>}
-                    {!user ? <Route  path="/home" component={HomePage}/> :
-                        <Route  path="/home" component={HomePage}/>}
+                    {!user ? <Route path="/home" component={HomePage}/> :
+                        <Route path="/home" component={HomePage}/>}
+
+                    <Route path="*" component={InvalidPage}/>
+                    </Switch>
                 </Router>
 
             </div>

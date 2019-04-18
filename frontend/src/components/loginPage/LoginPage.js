@@ -77,18 +77,19 @@ class LoginPage extends Component {
                                     )}
                                 </Form.Item>
 
-                                <Form.Item className="alignCenter">
+                                <Form.Item className="alignCenter" style={{marginBottom: 0, marginTop: 5}}>
                                     <Button type="primary" htmlType="submit" className="login-form-button">
                                         Login
                                     </Button>
                                 </Form.Item>
 
+                                <Form.Item className="alignCenter" style={{lineHeight: 0}}>
+                                    or <a href="/signUp">Register now!</a>
+                                </Form.Item>
                             </Form>
                         </Spin>
                     </Col>
                 </Row>
-
-
             </div>
         );
     }
