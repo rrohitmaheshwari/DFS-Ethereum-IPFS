@@ -5,9 +5,6 @@ import {
 
 import File from './helper/File.js'
 import './ViewFile.css';
-import web3 from '../../web3';
-import InboxFactoryABI from '../../helper/build/InboxFactory.json';
-import InboxABI from '../../helper/build/Inbox.json';
 
 const {Text} = Typography;
 
