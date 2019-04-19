@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import {
-    Layout, Menu, Avatar, Button, Icon
+    Layout, Menu, Button, Icon
 } from 'antd';
 import { message } from "antd/lib/index";
 import { history } from "../../helper/history";
 import { Router, Route } from 'react-router-dom';
-import AllFile from "../files/AllFile";
-import ReceivedFile from "../files/ReceivedFile";
-import SentFile from "../files/SentFile";
+import ViewFile from "../files/ViewFile";
 import Profile from "../profile/Profile";
 import Analytic from "../analytic/Analytic";
 
@@ -22,7 +20,6 @@ class HomePage extends Component {
         itemKey: '1',
         collapsed: false,
     };
-
 
     onCollapse = (collapsed) => {
 
@@ -45,9 +42,12 @@ class HomePage extends Component {
             history.push('/home/sentFiles');
         }
         else if (e.key === '4') {
-            history.push('/home/profile');
+            history.push('/home/myFiles');
         }
         else if (e.key === '5') {
+            history.push('/home/profile');
+        }
+        else if (e.key === '6') {
             history.push('/home/analytic');
         }
     };
@@ -141,10 +141,11 @@ class HomePage extends Component {
                                     <Menu.Item key="2"><span><Icon
                                         type="download"/><span>Received</span></span></Menu.Item>
                                     <Menu.Item key="3"><span><Icon type="upload"/><span>Sent</span></span></Menu.Item>
+                                    <Menu.Item key="4"><span><Icon type="save"/><span>My Files</span></span></Menu.Item>
 
                                 </SubMenu>
-                                <Menu.Item key="4"><span><Icon type="smile"/><span>Profile</span></span></Menu.Item>
-                                <Menu.Item key="5"><span><Icon
+                                <Menu.Item key="5"><span><Icon type="smile"/><span>Profile</span></span></Menu.Item>
+                                <Menu.Item key="6"><span><Icon
                                     type="radar-chart"/><span>Analytics</span></span></Menu.Item>
                             </Menu>
                         </Sider>
@@ -155,9 +156,18 @@ class HomePage extends Component {
                             >
 
                                 <Router history={history}>
-                                    <Route exact path="/home/allFiles" component={AllFile}/>
-                                    <Route exact path="/home/receivedFiles" component={ReceivedFile}/>
-                                    <Route exact path="/home/sentFiles" component={SentFile}/>
+                                    <Route exact path="/home/allFiles"
+                                           render={(props) => <ViewFile {...props} fileType={"All Files"}/>}
+                                    />
+                                    <Route exact path="/home/receivedFiles"
+                                           render={(props) => <ViewFile {...props} fileType={"Received Files"}/>}
+                                    />
+                                    <Route exact path="/home/sentFiles"
+                                           render={(props) => <ViewFile {...props} fileType={"Sent Files"}/>}
+                                    />
+                                    <Route exact path="/home/myFiles"
+                                           render={(props) => <ViewFile {...props} fileType={"My Files"}/>}
+                                    />
                                     <Route exact path="/home/profile" component={Profile}/>
                                     <Route exact path="/home/analytic" component={Analytic}/>
 

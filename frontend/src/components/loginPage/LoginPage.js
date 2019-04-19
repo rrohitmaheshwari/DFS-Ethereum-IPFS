@@ -37,7 +37,7 @@ class LoginPage extends Component {
                 setTimeout(function () {
                     message.success('Logged in Successfully');
                     history.push('/home/allFiles');
-                }.bind(this), 1000);
+                }, 1000);
 
             }
             else {

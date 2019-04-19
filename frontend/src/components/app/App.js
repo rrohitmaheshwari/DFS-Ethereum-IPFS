@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './App.css';
-import { simpleAction } from '../../actions/simpleAction';
+// import { simpleAction } from '../../actions/simpleAction';
 import { Router, Route, Switch} from 'react-router-dom';
 import SignUp from '../signUp/SignUp'
 import HomePage from '../homePage/HomePage'
@@ -29,7 +29,7 @@ class App extends Component {
 
     render() {
         let user = this.state.login;
-        const {simpleReducer} = this.props;
+        // const {simpleReducer} = this.props;
         return (
             <div className="App">
 
