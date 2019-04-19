@@ -5,6 +5,7 @@ import {
 
 import File from './helper/File.js'
 import './ViewFile.css';
+import { history } from "../../helper/history";
 
 const {Text} = Typography;
 
@@ -45,7 +46,10 @@ class ViewFile extends Component {
                       title={<div>
                           <Text strong> {fileType}</Text>
                           <Button className="float-right" type="primary" shape="round" icon="to-top"
-                                  size='default'>New</Button>
+                                  size='default' onClick={(event) => {
+                                      console.log('/home/newFile');
+                              history.push('/home/newFile');
+                          }}>New</Button>
                       </div>}
                 >
                     {files.map((element, key) => {

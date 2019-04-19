@@ -154,13 +154,13 @@ class SignUp extends Component {
                                            disabled={true}/>
                                 </Form.Item>
 
-                                <Form.Item className="alignCenter" style={{marginBottom: 0,marginTop: 5}}>
+                                <Form.Item className="alignCenter" >
                                     <Button type="primary" htmlType="submit" className="login-form-button">
                                         Register
                                     </Button>
                                 </Form.Item>
 
-                                <Form.Item className="alignCenter" style={{lineHeight: 0}}>
+                                <Form.Item className="alignCenter">
                                     or <a href="/Login">Sign In</a>
                                 </Form.Item>
                             </Form>

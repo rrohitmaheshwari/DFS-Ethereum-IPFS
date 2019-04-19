@@ -8,6 +8,7 @@ import { Router, Route } from 'react-router-dom';
 import ViewFile from "../files/ViewFile";
 import Profile from "../profile/Profile";
 import Analytic from "../analytic/Analytic";
+import NewFile from "../files/NewFile";
 import web3 from '../../web3';
 import InboxFactoryABI from '../../helper/build/InboxFactory.json';
 import InboxABI from '../../helper/build/Inbox.json';
@@ -120,7 +121,7 @@ class HomePage extends Component {
             marginLeft = 80;
         }
 
-        let selectedKey = '1';
+        let selectedKey = 'sub1';
 
         //logic to render correct selected menu item
 
@@ -137,12 +138,16 @@ class HomePage extends Component {
                 selectedKey = '3';
                 break;
 
-            case '/home/profile':
+            case '/home/myFiles':
                 selectedKey = '4';
                 break;
 
-            case '/home/analytic':
+            case '/home/profile':
                 selectedKey = '5';
+                break;
+
+            case '/home/analytic':
+                selectedKey = '6';
                 break;
 
             default:
@@ -185,7 +190,7 @@ class HomePage extends Component {
                                 onClick={this.handleClick}
                                 style={{height: '100%'}}
                                 mode="inline"
-                                defaultSelectedKeys={[selectedKey]}
+                                selectedKeys={[selectedKey]}
                                 defaultOpenKeys={['sub1']}
                             >
                                 <SubMenu key="sub1" title={<span><Icon type="desktop"/><span>Files</span></span>}>
@@ -234,6 +239,8 @@ class HomePage extends Component {
                                                                         loading={this.state.loading}
                                                                         selfAddress={this.state.selfAddress}/>}
                                     />
+
+                                    <Route exact path="/home/newFile" component={NewFile}/>
                                     <Route exact path="/home/profile" component={Profile}/>
                                     <Route exact path="/home/analytic" component={Analytic}/>
 
