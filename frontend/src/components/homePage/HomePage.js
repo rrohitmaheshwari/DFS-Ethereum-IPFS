@@ -24,6 +24,7 @@ class HomePage extends Component {
         collapsed: false,
         data: [],
         selfAddress: '',
+        loading: true
     };
 
 
@@ -69,7 +70,7 @@ class HomePage extends Component {
             tempObj.timeStamp = inboxData[i][4];
             temp.push(tempObj);
         }
-        this.setState({data: temp});
+        this.setState({data: temp, loading: false});
 
 
     }
@@ -205,27 +206,32 @@ class HomePage extends Component {
                             <Content style={{
                                 background: '#fff', padding: 24, minHeight: 280, margin: '0 16px'
                             }}
+
                             >
 
                                 <Router history={history}>
                                     <Route exact path="/home/allFiles"
                                            render={(props) => <ViewFile {...props} fileType={"All Files"}
                                                                         data={this.state.data}
+                                                                        loading={this.state.loading}
                                                                         selfAddress={this.state.selfAddress}/>}
                                     />
                                     <Route exact path="/home/receivedFiles"
                                            render={(props) => <ViewFile {...props} fileType={"Received Files"}
                                                                         data={this.state.data}
+                                                                        loading={this.state.loading}
                                                                         selfAddress={this.state.selfAddress}/>}
                                     />
                                     <Route exact path="/home/sentFiles"
                                            render={(props) => <ViewFile {...props} fileType={"Sent Files"}
                                                                         data={this.state.data}
+                                                                        loading={this.state.loading}
                                                                         selfAddress={this.state.selfAddress}/>}
                                     />
                                     <Route exact path="/home/myFiles"
                                            render={(props) => <ViewFile {...props} fileType={"My Files"}
                                                                         data={this.state.data}
+                                                                        loading={this.state.loading}
                                                                         selfAddress={this.state.selfAddress}/>}
                                     />
                                     <Route exact path="/home/profile" component={Profile}/>

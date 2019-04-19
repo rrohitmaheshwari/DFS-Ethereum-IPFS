@@ -44,6 +44,7 @@ class ViewFile extends Component {
 
 
                 <Card bordered={false}
+                      loading={this.props.loading}
                       title={<div>
                           <Text strong> {fileType}</Text>
                           <Button className="float-right" type="primary" shape="round" icon="to-top"
