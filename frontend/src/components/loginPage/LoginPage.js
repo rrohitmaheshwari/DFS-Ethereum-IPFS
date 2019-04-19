@@ -30,18 +30,18 @@ class LoginPage extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                this.setState({loading: true});
+                // this.setState({loading: true});
                 console.log('Received values of form: ', values);
                 //await api call
 
                 setTimeout(function () {
-                    this.setState({loading: false});
                     message.success('Logged in Successfully');
-                    history.push('/home');
+                    history.push('/home/allFiles');
                 }.bind(this), 1000);
 
             }
             else {
+                this.setState({loading: false});
                 message.error('Incomplete information');
             }
         });

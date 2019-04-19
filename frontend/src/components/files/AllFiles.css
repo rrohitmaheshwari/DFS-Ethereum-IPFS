@@ -3,9 +3,32 @@
 }
 
 .fileCard:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
     opacity:0.9;
     cursor: pointer;
-    position:relative;
-    top:1px;
+    animation: bounce 0.3s;
+}
+
+
+@keyframes bounce {
+    0%, 100% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+
+    50% {
+        -webkit-transform: translateY(-2px);
+        transform: translateY(-2px);
+    }
+
+}
+
+.float-right{
+    float: right;
+}
+
+.extraText{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

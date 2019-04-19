@@ -92,11 +92,11 @@ class HomePage extends Component {
                 break;
 
             default:
-                history.push('/home/allFiles');
+                // history.push('/home/allFiles'); //this will cause pure function render problem in console.
                 break;
         }
 
-
+        console.log("HomePage-render");
         return (
             <div className="HomePage">
 

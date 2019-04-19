@@ -19,6 +19,8 @@ contract Inbox{
         address fromAddress;
         address toAddress;
         string hash;
+        string fileName;
+        string timeStamp;
     }
 
     address public manager;
@@ -34,19 +36,21 @@ contract Inbox{
         _;
     }
     
-    function insertMessage(address fromAddress, address toAddress, string hash) public restricted {
+    function insertMessage(address fromAddress, address toAddress, string hash, string fileName, string timeStamp) public restricted {
         Message memory newMessage = Message({
            fromAddress: fromAddress,
            toAddress: toAddress,
-           hash: hash
+           hash: hash,
+           fileName: fileName,
+           timeStamp: timeStamp
         });
 
         messages.push(newMessage);
     }
      
-    function getMessages(uint index) public restricted view returns (address,address,string) {
+    function getMessages(uint index) public restricted view returns (address,address,string,string,string) {
           Message storage retrieveMessage = messages[index];
-          return ( retrieveMessage.fromAddress, retrieveMessage.toAddress, retrieveMessage.hash);
+          return ( retrieveMessage.fromAddress, retrieveMessage.toAddress, retrieveMessage.hash, retrieveMessage.fileName, retrieveMessage.timeStamp);
     }
     
     function getMessagesCount() public restricted view returns (uint) {
