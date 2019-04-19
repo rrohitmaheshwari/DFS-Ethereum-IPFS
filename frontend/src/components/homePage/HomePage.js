@@ -8,6 +8,9 @@ import { Router, Route } from 'react-router-dom';
 import ViewFile from "../files/ViewFile";
 import Profile from "../profile/Profile";
 import Analytic from "../analytic/Analytic";
+import web3 from '../../web3';
+import InboxFactoryABI from '../../helper/build/InboxFactory.json';
+import InboxABI from '../../helper/build/Inbox.json';
 
 const SubMenu = Menu.SubMenu;
 
@@ -19,7 +22,57 @@ class HomePage extends Component {
     state = {
         itemKey: '1',
         collapsed: false,
+        data: [],
+        selfAddress: '',
     };
+
+
+    async componentDidMount() {
+
+        //to be fetched from config file or from the server
+        const inboxFactoryAddress = '0xF06e6b002B451424265524354A3FA0D4A05d8036';
+
+        let accounts = await web3.eth.getAccounts();
+        this.setState({selfAddress: accounts[0]});
+
+        let instanceInboxFactory = new web3.eth.Contract(
+            JSON.parse(InboxFactoryABI.interface),
+            inboxFactoryAddress
+        );
+
+        let inboxAddress = await instanceInboxFactory.methods.getDeployedInbox().call({from: accounts[0]});
+
+
+        let instanceInbox = new web3.eth.Contract(
+            JSON.parse(InboxABI.interface),
+            inboxAddress
+        );
+
+        let inboxDataCount = await instanceInbox.methods.getMessagesCount().call({from: accounts[0]});
+
+
+        const inboxData = await Promise.all(
+            Array(parseInt(inboxDataCount))
+                .fill()
+                .map((element, index) => {
+                    return instanceInbox.methods.getMessages(index).call({from: accounts[0]});
+                })
+        );
+
+        let temp = [];
+        for (let i = 0; i < inboxData.length; i++) {
+            let tempObj = {};
+            tempObj.fromAddress = inboxData[i][0];
+            tempObj.toAddress = inboxData[i][1];
+            tempObj.hash = inboxData[i][2];
+            tempObj.fileName = inboxData[i][3];
+            tempObj.timeStamp = inboxData[i][4];
+            temp.push(tempObj);
+        }
+        this.setState({data: temp});
+
+
+    }
 
     onCollapse = (collapsed) => {
 
@@ -96,7 +149,6 @@ class HomePage extends Component {
                 break;
         }
 
-        console.log("HomePage-render");
         return (
             <div className="HomePage">
 
@@ -157,16 +209,24 @@ class HomePage extends Component {
 
                                 <Router history={history}>
                                     <Route exact path="/home/allFiles"
-                                           render={(props) => <ViewFile {...props} fileType={"All Files"}/>}
+                                           render={(props) => <ViewFile {...props} fileType={"All Files"}
+                                                                        data={this.state.data}
+                                                                        selfAddress={this.state.selfAddress}/>}
                                     />
                                     <Route exact path="/home/receivedFiles"
-                                           render={(props) => <ViewFile {...props} fileType={"Received Files"}/>}
+                                           render={(props) => <ViewFile {...props} fileType={"Received Files"}
+                                                                        data={this.state.data}
+                                                                        selfAddress={this.state.selfAddress}/>}
                                     />
                                     <Route exact path="/home/sentFiles"
-                                           render={(props) => <ViewFile {...props} fileType={"Sent Files"}/>}
+                                           render={(props) => <ViewFile {...props} fileType={"Sent Files"}
+                                                                        data={this.state.data}
+                                                                        selfAddress={this.state.selfAddress}/>}
                                     />
                                     <Route exact path="/home/myFiles"
-                                           render={(props) => <ViewFile {...props} fileType={"My Files"}/>}
+                                           render={(props) => <ViewFile {...props} fileType={"My Files"}
+                                                                        data={this.state.data}
+                                                                        selfAddress={this.state.selfAddress}/>}
                                     />
                                     <Route exact path="/home/profile" component={Profile}/>
                                     <Route exact path="/home/analytic" component={Analytic}/>
