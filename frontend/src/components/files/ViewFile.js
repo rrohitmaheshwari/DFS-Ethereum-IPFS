@@ -6,7 +6,8 @@ import {
 import File from './helper/File.js'
 import './ViewFile.css';
 import web3 from '../../web3';
-import InboxFactory from '../../helper/build/InboxFactory.json';
+import InboxFactoryABI from '../../helper/build/InboxFactory.json';
+import InboxABI from '../../helper/build/Inbox.json';
 
 const {Text} = Typography;
 
@@ -14,68 +15,7 @@ class ViewFile extends Component {
 
 
     state = {
-        data: [{
-            fromAddress: "self",
-            toAddress: "self",
-            hash: "hash",
-            fileName: "File Name 1",
-            timeStamp: "25 Jul 2018 04:44:15 GMT"
-        }, {
-            fromAddress: "other",
-            toAddress: "self",
-            hash: "hash",
-            fileName: "File Name 2",
-            timeStamp: "25 Aug 2018 05:44:15 GMT"
-        }, {
-            fromAddress: "self",
-            toAddress: "other",
-            hash: "hash",
-            fileName: "File Name 3 very long to fit 1",
-            timeStamp: "25 May 2019 06:44:15 GMT"
-        },
-            {
-                fromAddress: "self",
-                toAddress: "self",
-                hash: "hash",
-                fileName: "File Name 4",
-                timeStamp: "25 Jul 2018 04:44:15 GMT"
-            }, {
-                fromAddress: "other",
-                toAddress: "self",
-                hash: "hash",
-                fileName: "File Name 5",
-                timeStamp: "25 Aug 2018 05:44:15 GMT"
-            }, {
-                fromAddress: "self",
-                toAddress: "other",
-                hash: "hash",
-                fileName: "jFile Name 6 very long to fit 2",
-                timeStamp: "25 May 2019 06:44:15 GMT"
-            },
-
-            {
-                fromAddress: "self",
-                toAddress: "self",
-                hash: "hash",
-                fileName: "File Name 7",
-                timeStamp: "25 Jul 2018 04:44:15 GMT"
-            }, {
-                fromAddress: "other",
-                toAddress: "self",
-                hash: "hash",
-                fileName: "File Name 8",
-                timeStamp: "25 Aug 2018 05:44:15 GMT"
-            }, {
-                fromAddress: "self",
-                toAddress: "other",
-                hash: "hash",
-                fileName: "File Name 9 very long to fit 3",
-                timeStamp: "25 May 2019 06:44:15 GMT"
-            },
-
-
-        ]
-
+        data: []
     };
 
     async componentDidMount() {
@@ -84,28 +24,45 @@ class ViewFile extends Component {
         const inboxFactoryAddress = '0xF06e6b002B451424265524354A3FA0D4A05d8036';
 
         let accounts = await web3.eth.getAccounts();
-        console.log(accounts);
-        console.log(JSON.parse(InboxFactory.interface));
 
-        try {
-            let instance = new web3.eth.Contract(
-                JSON.parse(InboxFactory.interface),
-                inboxFactoryAddress
-            );
 
-            console.log(instance);
-            let inbox = await instance.methods.getDeployedInbox().call({from: accounts[0]});
-            // const inbox2 = await instance.methods.deployedInbox({accounts}).call();
+        let instanceInboxFactory = new web3.eth.Contract(
+            JSON.parse(InboxFactoryABI.interface),
+            inboxFactoryAddress
+        );
 
-            console.log("inbox");
-            console.log(inbox);
-            // console.log("inbox2");
-            // console.log(inbox2);
+        let inboxAddress = await instanceInboxFactory.methods.getDeployedInbox().call({from: accounts[0]});
+
+        console.log(inboxAddress);
+
+        let instanceInbox = new web3.eth.Contract(
+            JSON.parse(InboxABI.interface),
+            inboxAddress
+        );
+
+        let inboxDataCount = await instanceInbox.methods.getMessagesCount().call({from: accounts[0]});
+        console.log(inboxDataCount);
+
+
+        const inboxData = await Promise.all(
+            Array(parseInt(inboxDataCount))
+                .fill()
+                .map((element, index) => {
+                    return instanceInbox.methods.getMessages(index).call({from: accounts[0]});
+                })
+        );
+
+        let temp = [];
+        for (let i = 0; i < inboxData.length; i++) {
+            let tempObj = {};
+            tempObj.fromAddress = inboxData[i][0];
+            tempObj.toAddress = inboxData[i][1];
+            tempObj.hash = inboxData[i][2];
+            tempObj.fileName = inboxData[i][3];
+            tempObj.timeStamp = inboxData[i][4];
+            temp.push(tempObj);
         }
-        catch (err) {
-            console.log("err")
-            console.log(JSON.stringify(err))
-        }
+        this.setState({data: temp});
 
 
     }
