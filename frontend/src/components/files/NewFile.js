@@ -95,11 +95,12 @@ class NewFile extends Component {
 
                     let rInboxAddress;
 
-                    if (account[0] === receiverAddress) {
+                    if (account[0] !== receiverAddress) {
                         rInboxAddress = await instanceInboxFactory.methods.getDeployedInbox().call({from: receiverAddress});
                     }
 
                     console.log('inboxAddress' + inboxAddress);
+                    console.log('inboxAddress' + rInboxAddress);
                     console.log('Generating instanceInbox');
 
                     let instanceInbox = new web3.eth.Contract(
@@ -109,7 +110,7 @@ class NewFile extends Component {
 
                     let rinstanceInbox;
 
-                    if (account[0] === receiverAddress) {
+                    if (account[0] !== receiverAddress) {
                         rinstanceInbox = new web3.eth.Contract(
                             JSON.parse(InboxABI.interface),
                             rInboxAddress
@@ -125,8 +126,16 @@ class NewFile extends Component {
                         console.log('call to self succeeded');
                     }
                     else {
-                        await instanceInbox.methods.insertMessage(obj.fromAddress, obj.toAddress, obj.hash, obj.fileName, obj.timeStamp).send({from: account[0]})
-                        await rinstanceInbox.methods.insertMessage(obj.toAddress, obj.fromAddress, obj.hash, obj.fileName, obj.timeStamp).send({from: account[0]})
+
+
+                        let insert_message = async function () {
+                            return await Promise.all([instanceInbox.methods.insertMessage(obj.fromAddress, obj.toAddress, obj.hash, obj.fileName, obj.timeStamp).send({from: account[0]})
+                                , rinstanceInbox.methods.insertMessage(obj.toAddress, obj.fromAddress, obj.hash, obj.fileName, obj.timeStamp).send({from: account[0]})]);
+
+                        }
+                        let result = await insert_message();
+
+                        console.log('call to two accounts successful');
                     }
 
 

@@ -39,7 +39,8 @@ contract Inbox{
 
 
     function insertMessage(address fromAddress, address toAddress, string hash, string fileName, string timeStamp) public {
-         require(fromAddress == manager || toAddress == manager);
+        require(fromAddress == manager || toAddress == manager);
+        
         Message memory newMessage = Message({
            fromAddress: fromAddress,
            toAddress: toAddress,
