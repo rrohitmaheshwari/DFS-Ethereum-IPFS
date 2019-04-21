@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Upload, Icon, message, Form, Input, Row, Col, Button, Spin, Typography } from 'antd';
-
+import web3 from '../../web3';
+import InboxFactoryABI from '../../helper/build/InboxFactory.json';
+import InboxABI from '../../helper/build/Inbox.json';
 
 const Dragger = Upload.Dragger;
 const {Text} = Typography;
@@ -37,26 +39,104 @@ class NewFile extends Component {
 
     }
 
-    handleSubmit = (e) => {
+
+    handleSubmit = async (e) => {
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
+        this.props.form.validateFields(async (err, values) => {
             if (!err) {
                 this.setState({loading: true});
-                console.log('Received values of form: ', values);
-                //await api call to check for valid email address and return its public key
 
-                //encrypt the file with the public key
+                try {
 
-                //if file is uploaded and we will get hash in return(or we could upload to ipfs from frontend only
 
-                //call to smart contract with required fields-> fromAddress,toAddress, hash, fileName, timeStamp
-                //this will involve two call if sender is not self (update both Addresses account)
+                    //to be fetched from config file or from the server
+                    const inboxFactoryAddress = '0xF06e6b002B451424265524354A3FA0D4A05d8036';
 
-                // setTimeout(function () {
-                //     this.setState({loading: false});
-                //
-                // }.bind(this), 1000);
-                message.success('Uploaded Successfully');
+                    let account = await web3.eth.getAccounts();
+
+                    console.log('accounts : ' + account[0]);
+
+                    //*******await api call to check for valid email address and return its public key
+
+                    //*******encrypt the file with the public key
+
+                    //*******if file is uploaded and we will get hash in return(or we could upload to ipfs from frontend only
+
+                    //*******call to smart contract with required fields-> fromAddress,toAddress, hash, fileName, timeStamp
+                    //*******this will involve two call if sender is not self (update both Addresses account)
+
+
+                    console.log('Generating instanceInboxFactory');
+
+                    let instanceInboxFactory = new web3.eth.Contract(
+                        JSON.parse(InboxFactoryABI.interface),
+                        inboxFactoryAddress
+                    );
+
+
+                    let date = new Date();
+                    let processedDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+
+
+                    //Receiver's address to be fetched from serve by email id
+                    let receiverAddress = '0x3552CE099Da8e41BFA5F813dFF0226bF8855de0B'
+
+                    let obj = {}
+                    obj.fromAddress = account[0];
+                    obj.toAddress = receiverAddress;     //account that we get from the server by sending the email id
+                    obj.hash = "Hash that we get from sending to IPFS";
+                    obj.fileName = this.state.fileName;
+                    obj.timeStamp = processedDate;
+
+
+                    console.log('Getting inboxAddress');
+
+                    let inboxAddress = await instanceInboxFactory.methods.getDeployedInbox().call({from: account[0]});
+
+                    let rInboxAddress;
+
+                    if (account[0] === receiverAddress) {
+                        rInboxAddress = await instanceInboxFactory.methods.getDeployedInbox().call({from: receiverAddress});
+                    }
+
+                    console.log('inboxAddress' + inboxAddress);
+                    console.log('Generating instanceInbox');
+
+                    let instanceInbox = new web3.eth.Contract(
+                        JSON.parse(InboxABI.interface),
+                        inboxAddress
+                    );
+
+                    let rinstanceInbox;
+
+                    if (account[0] === receiverAddress) {
+                        rinstanceInbox = new web3.eth.Contract(
+                            JSON.parse(InboxABI.interface),
+                            rInboxAddress
+                        );
+                    }
+
+                    console.log('call to insertMessage');
+
+                    //address fromAddress, address toAddress, string hash, string fileName, string timeStamp
+
+                    if (account[0] === receiverAddress) {
+                        await instanceInbox.methods.insertMessage(obj.fromAddress, obj.toAddress, obj.hash, obj.fileName, obj.timeStamp).send({from: account[0]});
+                        console.log('call to self succeeded');
+                    }
+                    else {
+                        await instanceInbox.methods.insertMessage(obj.fromAddress, obj.toAddress, obj.hash, obj.fileName, obj.timeStamp).send({from: account[0]})
+                        await rinstanceInbox.methods.insertMessage(obj.toAddress, obj.fromAddress, obj.hash, obj.fileName, obj.timeStamp).send({from: account[0]})
+                    }
+
+
+                    this.setState({loading: false});
+                    message.success('Uploaded Successfully');
+                } catch (err) {
+                    this.setState({loading: false});
+                    message.success('Message not sent');
+                }
+
 
             }
             else {

@@ -33,9 +33,12 @@ class HomePage extends Component {
 
         //to be fetched from config file or from the server
         const inboxFactoryAddress = '0xF06e6b002B451424265524354A3FA0D4A05d8036';
+        console.log('inboxFactoryAddress:'+inboxFactoryAddress)
 
         let accounts = await web3.eth.getAccounts();
         this.setState({selfAddress: accounts[0]});
+
+        console.log('accounts:'+accounts[0])
 
         let instanceInboxFactory = new web3.eth.Contract(
             JSON.parse(InboxFactoryABI.interface),
@@ -43,7 +46,7 @@ class HomePage extends Component {
         );
 
         let inboxAddress = await instanceInboxFactory.methods.getDeployedInbox().call({from: accounts[0]});
-
+        console.log('inboxAddress:'+inboxAddress)
 
         let instanceInbox = new web3.eth.Contract(
             JSON.parse(InboxABI.interface),
@@ -52,6 +55,7 @@ class HomePage extends Component {
 
         let inboxDataCount = await instanceInbox.methods.getMessagesCount().call({from: accounts[0]});
 
+        console.log('inboxDataCount:'+inboxDataCount)
 
         const inboxData = await Promise.all(
             Array(parseInt(inboxDataCount))
