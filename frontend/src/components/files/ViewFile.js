@@ -19,7 +19,7 @@ class ViewFile extends Component {
 
 
         //filer file according to All File, Received Files, Sent Files, My Files
-        for (let j = 0; j < data.length; j++) {
+        for (let j = data.length - 1; j >= 0; j--) {
             if (fileType === "Sent Files" && data[j].toAddress !== selfAddress) {
                 files.push(data[j])
             }
@@ -47,7 +47,7 @@ class ViewFile extends Component {
                           <Text strong> {fileType}</Text>
                           <Button className="float-right" type="primary" shape="round" icon="to-top"
                                   size='default' onClick={(event) => {
-                                      console.log('/home/newFile');
+                              console.log('/home/newFile');
                               history.push('/home/newFile');
                           }}>New</Button>
                       </div>}
