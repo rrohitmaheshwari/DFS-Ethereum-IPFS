@@ -4,6 +4,7 @@ import {
 } from 'antd';
 import web3 from '../../web3';
 import EthCrypto from 'eth-crypto';
+import InboxFactoryABI from '../../helper/build/InboxFactory.json';
 
 
 class SignUp extends Component {
@@ -27,19 +28,53 @@ class SignUp extends Component {
 
     }
 
-    handleSubmit = (e) => {
+    handleSubmit = async (e) => {
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
+        this.props.form.validateFields(async (err, values) => {
             if (!err) {
-                this.setState({loading: true});
-                console.log('Received values of form: ', values);
-                //await api call
 
-                setTimeout(function () {
-                    this.setState({loading: false});
+                try {
+
+
+                    console.log('Received values of form: ', values);
+                    this.setState({loading: true});
+
+                    //to be fetched from config file or from the server
+                    const inboxFactoryAddress = '0xFa5cfcaA2eF44eF0cF77A9C9c3fa5673c59cFDa6';
+
+
+                    let account = await web3.eth.getAccounts();
+                    //check if email id & public key has already been registered
+
+                    console.log('account:' + account[0]);
+                    //create entry in the blockchain Inbox Factory
+                    let instanceInboxFactory = new web3.eth.Contract(
+                        JSON.parse(InboxFactoryABI.interface),
+                        inboxFactoryAddress
+                    );
+
+                    console.log('Creating instanceInboxFactory:' + instanceInboxFactory);
+
+                    await instanceInboxFactory.methods.createInbox().send({from: account[0]});
+
+                    console.log('Created instanceInboxFactory');
+
+                    //get back the deployed Inbox address
+
+                    let inboxAddress = await instanceInboxFactory.methods.getDeployedInbox().call({from: account[0]});
+
+
+                    //create new user by sending all information to the server( Do Not Send the Private Key)
+                    console.log('Created inboxAddress:' + inboxAddress);
+
                     message.success('Registered Successfully');
-                }.bind(this), 1000);
+                    message.success('Inbox Address:' + inboxAddress);
 
+                    this.setState({loading: false});
+                    //redirect to login
+                } catch (err) {
+                    message.error('Error');
+                }
             }
             else {
                 message.error('Please correct the form');
@@ -146,7 +181,7 @@ class SignUp extends Component {
 
                                 <Form.Item label="Address" hasFeedback validateStatus={validAddress}
 
-                                           help={validAddress==="error" ?"Enter Valid Private Key":""}
+                                           help={validAddress === "error" ? "Enter Valid Private Key" : ""}
 
                                            className="marginBottom0">
                                     <Input prefix={<Icon type="property-safety" style={{color: 'rgba(0,0,0,.25)'}}/>}
@@ -154,7 +189,7 @@ class SignUp extends Component {
                                            disabled={true}/>
                                 </Form.Item>
 
-                                <Form.Item className="alignCenter" >
+                                <Form.Item className="alignCenter">
                                     <Button type="primary" htmlType="submit" className="login-form-button">
                                         Register
                                     </Button>
