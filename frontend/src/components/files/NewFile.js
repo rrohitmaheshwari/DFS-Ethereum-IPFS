@@ -130,7 +130,7 @@ class NewFile extends Component {
 
                         let insert_message = async function () {
                             return await Promise.all([instanceInbox.methods.insertMessage(obj.fromAddress, obj.toAddress, obj.hash, obj.fileName, obj.timeStamp).send({from: account[0]})
-                                , rinstanceInbox.methods.insertMessage(obj.toAddress, obj.fromAddress, obj.hash, obj.fileName, obj.timeStamp).send({from: account[0]})]);
+                                , rinstanceInbox.methods.insertMessage(obj.fromAddress, obj.toAddress, obj.hash, obj.fileName, obj.timeStamp).send({from: account[0]})]);
 
                         }
                         let result = await insert_message();

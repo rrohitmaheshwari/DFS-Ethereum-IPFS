@@ -59,7 +59,7 @@ class ViewFile extends Component {
                         else if (element.fromAddress === selfAddress) {
                             return (<File key={key} type={"sent"} data={element}/>)
                         }
-                        else {
+                        else if (element.toAddress === selfAddress) {
                             return (<File key={key} type={"received"} data={element}/>)
                         }
                     })}
