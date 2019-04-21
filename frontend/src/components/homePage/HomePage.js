@@ -32,7 +32,7 @@ class HomePage extends Component {
     async componentDidMount() {
 
         //to be fetched from config file or from the server
-        const inboxFactoryAddress = '0xF06e6b002B451424265524354A3FA0D4A05d8036';
+        const inboxFactoryAddress = '0xFa5cfcaA2eF44eF0cF77A9C9c3fa5673c59cFDa6';
         console.log('inboxFactoryAddress:'+inboxFactoryAddress)
 
         let accounts = await web3.eth.getAccounts();

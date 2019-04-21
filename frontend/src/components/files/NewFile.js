@@ -50,7 +50,7 @@ class NewFile extends Component {
 
 
                     //to be fetched from config file or from the server
-                    const inboxFactoryAddress = '0xF06e6b002B451424265524354A3FA0D4A05d8036';
+                    const inboxFactoryAddress = '0xFa5cfcaA2eF44eF0cF77A9C9c3fa5673c59cFDa6';
 
                     let account = await web3.eth.getAccounts();
 
@@ -134,7 +134,7 @@ class NewFile extends Component {
                     message.success('Uploaded Successfully');
                 } catch (err) {
                     this.setState({loading: false});
-                    message.success('Message not sent');
+                    message.error('Message not sent!');
                 }
 
 
