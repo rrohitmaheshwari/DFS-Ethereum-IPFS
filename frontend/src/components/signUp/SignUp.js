@@ -84,6 +84,15 @@ class SignUp extends Component {
         });
     }
 
+    validatePrivateKey = (rule, value, callback) => {
+        // const form = this.props.form;
+        // if (value && this.state.confirmDirty) {
+        //     form.validateFields(['confirm'], { force: true });
+        // }
+        callback('Enter Valid Private Key');
+    }
+
+
     render() {
 
         const privateKey = this.props.form.getFieldValue('privateKey');
@@ -188,9 +197,21 @@ class SignUp extends Component {
                                            help={validAddress === "error" ? "Enter Valid Private Key" : ""}
 
                                            className="marginBottom0">
-                                    <Input prefix={<Icon type="property-safety" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                           type="barcode" placeholder="No account selected" value={showAddress}
-                                           disabled={true}/>
+
+                                    {getFieldDecorator('privatekey', {
+                                        rules: [
+                                            {
+                                                // validator: this.validatePrivateKey,
+                                            }],
+                                        initialValue: showAddress,
+                                    })(
+                                        <Input
+                                            prefix={<Icon type="property-safety" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                                            type="barcode" placeholder="No account selected" 
+                                            disabled={true}/>
+                                    )}
+
+
                                 </Form.Item>
 
                                 <Form.Item className="alignCenter">
