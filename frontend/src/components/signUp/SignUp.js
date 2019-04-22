@@ -85,17 +85,49 @@ class SignUp extends Component {
     }
 
     validatePrivateKey = (rule, value, callback) => {
-        // const form = this.props.form;
-        // if (value && this.state.confirmDirty) {
-        //     form.validateFields(['confirm'], { force: true });
-        // }
-        callback('Enter Valid Private Key');
+        const form = this.props.form;
+
+
+        const privateKey = form.getFieldValue('PrivateKey');
+        console.log(privateKey);
+        let showAddress = this.state.account;
+
+        let publicKey;
+        let address;
+        let validAddress = "";
+        try {
+
+            publicKey = EthCrypto.publicKeyByPrivateKey(
+                privateKey
+            );
+
+
+            address = EthCrypto.publicKey.toAddress(
+                publicKey
+            );
+
+        }
+        catch (err) {
+            callback('Enter Valid Private Key!');
+        }
+
+
+        if (this.state.account === address) {
+            console.log("valid1");
+            callback();
+        }
+
+        if (!this.state.metamask && address && address.length !== 0) {
+            console.log("valid2");
+            callback();
+        }
+
     }
 
 
     render() {
 
-        const privateKey = this.props.form.getFieldValue('privateKey');
+        const privateKey = this.props.form.getFieldValue('PrivateKey');
         let showAddress = this.state.account;
 
         let publicKey;
@@ -110,6 +142,9 @@ class SignUp extends Component {
             address = EthCrypto.publicKey.toAddress(
                 publicKey
             );
+
+            console.log('publicKey');
+            console.log(publicKey);
 
         }
         catch (err) {
@@ -177,8 +212,10 @@ class SignUp extends Component {
                                 </Form.Item>
 
                                 <Form.Item label="Private Key" className="marginBottom0">
-                                    {getFieldDecorator('privateKey', {
-                                        rules: [{required: true, message: 'Please input your Private Key!'}],
+                                    {getFieldDecorator('PrivateKey', {
+                                        rules: [{
+                                            validator: this.validatePrivateKey,
+                                        }],
                                     })(
                                         <Input prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
                                                type="password" placeholder="PrivateKey"/>
@@ -189,25 +226,24 @@ class SignUp extends Component {
                                 <Form.Item label="Public Key" className="marginBottom0">
                                     <Input prefix={<Icon type="property-safety" style={{color: 'rgba(0,0,0,.25)'}}/>}
                                            type="account" placeholder="Public Key" value={publicKey}
-                                           disabled={true}/>
+                                           disabled={true}
+                                    />
                                 </Form.Item>
 
-                                <Form.Item label="Address" hasFeedback validateStatus={validAddress}
+                                <Form.Item label="Address"
+                                           hasFeedback validateStatus={validAddress}
 
-                                           help={validAddress === "error" ? "Enter Valid Private Key" : ""}
+                                           help={validAddress === "error" ? "Mismatch Keys" : ""}
 
                                            className="marginBottom0">
 
-                                    {getFieldDecorator('privatekey', {
-                                        rules: [
-                                            {
-                                                // validator: this.validatePrivateKey,
-                                            }],
+                                    {getFieldDecorator('Address', {
+                                        rules: [],
                                         initialValue: showAddress,
                                     })(
                                         <Input
                                             prefix={<Icon type="property-safety" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                            type="barcode" placeholder="No account selected" 
+                                            type="barcode" placeholder="No account selected"
                                             disabled={true}/>
                                     )}
 
