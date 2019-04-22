@@ -73,10 +73,12 @@ class SignUp extends Component {
                     this.setState({loading: false});
                     //redirect to login
                 } catch (err) {
+                    this.setState({loading: false});
                     message.error('Error');
                 }
             }
             else {
+                this.setState({loading: false});
                 message.error('Please correct the form');
             }
         });
@@ -147,7 +149,9 @@ class SignUp extends Component {
 
                                 <Form.Item label="e-mail" className="marginBottom0">
                                     {getFieldDecorator('email', {
-                                        rules: [{required: true, message: 'Please enter your email!'}],
+                                        rules: [{
+                                            type: 'email', message: 'The input is not valid E-mail!',
+                                        }, {required: true, message: 'Please enter your email!'}],
                                     })(
                                         <Input prefix={<Icon type="global" style={{color: 'rgba(0,0,0,.25)'}}/>}
                                                placeholder="email"/>
