@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    Form, Icon, Input, Button, Row, Col, Spin, message
+    Form, Icon, Input, Button, Row, Col, Spin, message, Avatar
 } from 'antd';
 import web3 from '../../web3';
 import EthCrypto from 'eth-crypto';
@@ -170,7 +170,13 @@ class SignUp extends Component {
                 <Row type="flex" justify="space-around" align="middle" className="fullHeight">
                     <Col span={6} className="boxShadow">
                         <Spin spinning={this.state.loading} delay={500}>
+
                             <h2 className="alignCenter">Sign Up</h2>
+
+                            <div style={{textAlign: 'center'}}>
+                                <Avatar size={64} style={{backgroundColor: '#87d068'}} icon="user"/>
+                            </div>
+
                             <Form onSubmit={this.handleSubmit} className="login-form">
 
                                 <Form.Item label="First Name" className="marginBottom0">
