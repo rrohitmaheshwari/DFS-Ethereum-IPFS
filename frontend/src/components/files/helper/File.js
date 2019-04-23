@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import {
     Card, Typography
 } from 'antd';
+import { history } from "../../../helper/history";
 
-
+const queryString = require('query-string');
 const {Text} = Typography;
 
 let gridStyle = {
@@ -47,6 +48,18 @@ const cardSelf = {
 
 class File extends Component {
 
+    onPress = (e) => {
+
+        let data = this.props.data;
+
+        history.push('/file?'+queryString.stringify(data));
+
+        console.log("Pressed");
+        console.log(data);
+
+
+}
+
 
     render() {
 
@@ -72,7 +85,7 @@ class File extends Component {
         return (
 
 
-            <Card.Grid className="fileCard extraText" style={gridStyle}>
+            <Card.Grid className="fileCard extraText" style={gridStyle} onClick={this.onPress}>
 
                 <i className={icon} style={cardStyle}></i>
                 <br/><br/>

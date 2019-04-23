@@ -50,6 +50,8 @@ class App extends Component {
                         <Route exact path="/login" component={HomePage}/>}
                     {!user ? <Route path="/home" component={HomePage}/> :
                         <Route path="/home" component={HomePage}/>}
+                        {!user ? <Route path="/file" component={HomePage}/> :
+                            <Route path="/file" component={HomePage}/>}
 
                     <Route path="*" component={InvalidPage}/>
                     </Switch>
