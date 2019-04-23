@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    Typography, Card
+    Typography, Card, Button
 } from 'antd';
 import queryString from 'query-string';
 import web3 from "../../../web3";
@@ -73,7 +73,6 @@ class FileDetailed extends Component {
 
     render() {
 
-
         return (
 
             <div className="FileDetailed">
@@ -83,7 +82,12 @@ class FileDetailed extends Component {
                       loading={this.state.loading}
                       title={<div>
                           <Text strong> {this.state.fileName}</Text>
+                          <Button className="float-right" type="primary" shape="round" icon="rollback"
+                                  size='default' onClick={(event) => {
+                              history.goBack();
+                          }}>Back</Button>
                       </div>}
+
                 >
                     <Text strong>From:</Text>
                     <Text>{this.state.fromAddressEmail}</Text>

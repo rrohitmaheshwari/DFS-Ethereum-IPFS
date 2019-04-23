@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Upload, Icon, message, Form, Input, Row, Col, Button, Spin, Typography } from 'antd';
+import { Upload, Icon, message, Form, Input, Row, Col, Button, Spin, Typography,Card } from 'antd';
 import web3 from '../../web3';
 import InboxFactoryABI from '../../helper/build/InboxFactory.json';
 import InboxABI from '../../helper/build/Inbox.json';
+import { history } from "../../helper/history";
 
 const Dragger = Upload.Dragger;
 const {Text} = Typography;
@@ -180,6 +181,16 @@ class NewFile extends Component {
             <div className="NewFile">
                 <Spin spinning={this.state.loading} delay={500}>
 
+                    <Card bordered={false}
+                          title={<div>
+                              <Text strong> Upload File </Text>
+                              <Button className="float-right" type="primary" shape="round" icon="rollback"
+                                      size='default' onClick={(event) => {
+                                  history.goBack();
+                              }}>Back</Button>
+                          </div>}
+
+                    >
                     <Row type="flex" justify="space-around" align="middle" className="fullHeight">
                         <Col span={12}>
                             <div style={{marginBottom: 10}}>
@@ -234,7 +245,10 @@ class NewFile extends Component {
                         </Col>
                     </Row>
 
+                    </Card>
                 </Spin>
+
+
             </div>
 
 

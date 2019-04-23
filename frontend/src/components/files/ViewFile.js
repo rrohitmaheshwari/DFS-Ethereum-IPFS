@@ -45,7 +45,7 @@ class ViewFile extends Component {
                       loading={this.props.loading}
                       title={<div>
                           <Text strong> {fileType}</Text>
-                          <Button className="float-right" type="primary" shape="round" icon="to-top"
+                          <Button className="float-right" type="primary" shape="round" icon="file-add"
                                   size='default' onClick={(event) => {
                               console.log('/home/newFile');
                               history.push('/home/newFile');
