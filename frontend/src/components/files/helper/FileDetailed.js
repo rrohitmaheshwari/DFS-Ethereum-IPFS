@@ -89,12 +89,18 @@ class FileDetailed extends Component {
                       </div>}
 
                 >
-                    <Text strong>From:</Text>
+                    <Text strong>From: </Text>
                     <Text>{this.state.fromAddressEmail}</Text>
                     <br/>
                     <br/>
-                    <Text strong>To:</Text>
+                    <Text strong>To: </Text>
                     <Text>{this.state.toAddressEmail}</Text>
+                    <br/>
+                    <br/>
+                    <Text strong>Time: </Text>
+                    <Text>{this.state.timeStamp}</Text>
+                    <br/>
+                    <br/>
                 </Card>
 
 
