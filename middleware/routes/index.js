@@ -19,7 +19,7 @@ router.post('/register', async (req, res, next) => {
 
             req.db
                 .collection('users')
-                .find({name: req.body.name})
+                .find({email: req.body.email})
                 .limit(1)
                 .toArray(function (err, data) {
                     err
@@ -37,10 +37,12 @@ router.post('/register', async (req, res, next) => {
     }
     else {
         req.db.collection('users').insert({
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
             email: req.body.email,
             password: req.body.password,
             publicKey: req.body.publicKey,
-            name: req.body.name
+            address: req.body.address
         });
         res.status(201);
         res.send({msg: 'User Registered Successfully'});
