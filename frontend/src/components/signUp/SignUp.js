@@ -174,7 +174,7 @@ class SignUp extends Component {
                             <h2 className="alignCenter">Sign Up</h2>
 
                             <div style={{textAlign: 'center'}}>
-                                <Avatar size={64} style={{backgroundColor: '#87d068'}} icon="user"/>
+                                <Avatar size={64} style={{backgroundColor: '#537895'}} icon="user"/>
                             </div>
 
                             <Form onSubmit={this.handleSubmit} className="login-form">

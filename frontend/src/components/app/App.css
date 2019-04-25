@@ -2,18 +2,27 @@
     height: 100%;
 }
 
-.boxShadow {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    border-radius: 5px;
+.boxShadow, .ant-layout-content {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+    border-radius: 5px !important;
     padding: 10px !important;
-    margin: 20px;
+    margin: 20px !important;
+    background: white !important;
+    opacity: 0.9 !important;
 
 }
 
-.alignCenter{
+.alignCenter {
     text-align: center;
 }
 
-.marginBottom0{
+.marginBottom0 {
     margin-bottom: 0px !important;
+}
+
+body {
+    background: #09203f; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #09203f 0%, #537895 100%); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #09203f 0%, #537895 100%); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
