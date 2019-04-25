@@ -5,6 +5,7 @@ import {
 import queryString from 'query-string';
 import web3 from "../../../web3";
 import { history } from "../../../helper/history";
+import EthCrypto from 'eth-crypto';
 
 
 const {Text} = Typography;
@@ -56,7 +57,8 @@ class FileDetailed extends Component {
         fileName: '',
         timeStamp: '',
         loading: true,
-        type: ''
+        type: '',
+        account: '',
     }
 
 
@@ -64,6 +66,8 @@ class FileDetailed extends Component {
 
         this.setState({loading: true});
         let accounts = await web3.eth.getAccounts();
+        this.state.account = accounts[0];
+
 
         //user email- get it from REDUX
         let selfEmail = "self.email@gmail.com";
@@ -114,7 +118,7 @@ class FileDetailed extends Component {
             if (!err) {
                 this.setState({loading: true});
                 console.log('Received values of form: ', values);
-                //await api call
+                //await api call to get the file and the decrypt it using Private Key( values.PrivateKey )
 
                 setTimeout(function () {
                     message.success('File Downloaded');
@@ -126,6 +130,43 @@ class FileDetailed extends Component {
                 message.error('Incomplete information');
             }
         });
+    }
+
+    validatePrivateKey = (rule, value, callback) => {
+        const form = this.props.form;
+
+
+        const privateKey = form.getFieldValue('PrivateKey');
+        console.log(privateKey);
+        let showAddress = this.state.account;
+
+        let publicKey;
+        let address;
+        let validAddress = "";
+        try {
+
+            publicKey = EthCrypto.publicKeyByPrivateKey(
+                privateKey
+            );
+
+
+            address = EthCrypto.publicKey.toAddress(
+                publicKey
+            );
+
+        }
+        catch (err) {
+            callback('Enter Valid Private Key!');
+        }
+
+
+        if (this.state.account === address) {
+            callback();
+        }
+
+        if (!this.state.metamask && address && address.length !== 0) {
+            callback();
+        }
     }
 
     render() {
@@ -174,6 +215,44 @@ class FileDetailed extends Component {
         if (this.state.type === "received" || this.state.type === "self") {
             isDownloadable = true;
         }
+        const privateKey = this.props.form.getFieldValue('PrivateKey');
+        let showAddress = this.state.account;
+
+        let publicKey;
+        let address;
+        let validAddress = "";
+        try {
+
+            publicKey = EthCrypto.publicKeyByPrivateKey(
+                privateKey
+            );
+
+            address = EthCrypto.publicKey.toAddress(
+                publicKey
+            );
+
+            console.log('publicKey');
+            console.log(publicKey);
+
+        }
+        catch (err) {
+//intial rendering errors & invalid private key error(while typing)
+        }
+
+
+        if (privateKey && privateKey.length !== 0) {
+            validAddress = "error";
+        }
+        if (this.state.account === address) {
+            validAddress = "success";
+        }
+
+        if (!this.state.metamask && address && address.length !== 0) {
+            showAddress = address;
+            validAddress = "success";
+        }
+
+
         return (
 
             <div className="FileDetailed">
@@ -235,9 +314,9 @@ class FileDetailed extends Component {
                                 </Form.Item>
                                 {isDownloadable &&
 
-                                <Form.Item label="Private Key">
-                                    {getFieldDecorator('pKey', {
-                                        rules: [{required: true, message: 'Please enter private key!'}],
+                                <Form.Item label="Private Key" hasFeedback validateStatus={validAddress}>
+                                    {getFieldDecorator('PrivateKey', {
+                                        rules: [{validator: this.validatePrivateKey,}],
                                     })(
                                         <Input prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
                                                placeholder="Private Key"/>
