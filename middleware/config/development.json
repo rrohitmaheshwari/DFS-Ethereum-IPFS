@@ -1,3 +1,4 @@
 {
-  "mongodb_url": "mongodb://admin:admin5@ds155263.mlab.com:55263/users_blockchain_db"
+  "mongodb_url": "mongodb://admin:admin5@ds155263.mlab.com:55263/users_blockchain_db",
+  "deployAddress": "0xFa5cfcaA2eF44eF0cF77A9C9c3fa5673c59cFDa6"
 }

@@ -100,5 +100,79 @@ router.get('/logout', function (req, res, next) {
     }
 });
 
+/* POST call to check whether email exists or not. */
+router.post('/checkEmailExists', async (req, res, next) => {
+    logger.info("[POST]/checkEmailExists");
 
+    var findUser = () => {
+        return new Promise((resolve, reject) => {
+
+            req.db
+                .collection('users')
+                .find({email: req.body.email})
+                .limit(1)
+                .toArray(function (err, data) {
+                    err
+                        ? reject(err)
+                        : resolve(data);
+                });
+        });
+    };
+    var result = await findUser();
+
+    if (result.length === 1 ) {
+        res.status(403);
+        res.send({msg: 'Fail: Email Exists'});
+    }
+    else {
+        res.status(201);
+        res.send({msg: 'Success: Email Not Exist'});
+    }
+});
+
+//
+router.get('/fetchInboxIndress', function (req, res, next) {
+    logger.info("[GET]/fetchInboxIndress",null,2);
+
+        res.status(201);
+        res.send({msg: config.deployAddress});
+    
+});
+
+router.get('/getAccount',isLoggedIn, async function (req, res, next) {
+    logger.info("[GET]/getAccount",null,2);
+
+    var findUser = () => {
+        return new Promise((resolve, reject) => {
+
+            req.db
+                .collection('users')
+                .find({email: req.body.email})
+                .limit(1)
+                .toArray(function (err, data) {
+                    err
+                        ? reject(err)
+                        : resolve(data);
+                });
+        });
+    };
+
+    var result = await findUser();
+
+
+    if (result.length === 1) {
+        console.log(result);
+        let responseObj= {}
+        responseObj.address = result[0].address;
+        responseObj.publicKey =result[0].publicKey;
+        res.status(200);
+        res.send({responseObj});
+        
+    }
+    else {
+        res.status(403);
+        res.send({msg: 'Unable to Fetch Account Details'});
+    }
+    
+});
 module.exports = router;
