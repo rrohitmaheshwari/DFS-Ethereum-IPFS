@@ -167,7 +167,7 @@ class HomePage extends Component {
                     <Header style={{position: 'fixed', width: '100%', zIndex: 1, background: '#fff'}} theme='light'>
 
                         {/*<Avatar shape="square" size={64} icon="user"/>*/}
-                        <Icon type="gitlab" style={{fontSize: '60px', marginLeft: '17px'}}/>
+                        <Icon type="gitlab" style={{fontSize: '60px', marginLeft: '17px', color: '#1890ff'}}/>
 
 
                         <Button type="primary" icon="poweroff" onClick={this.logoutButton}
