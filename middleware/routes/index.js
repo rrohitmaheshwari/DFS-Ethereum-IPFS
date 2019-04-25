@@ -1,7 +1,8 @@
 let express = require('express');
 let router = express.Router();
 const config = require('config');
-const logger = require('../config/logger')
+const logger = require('../config/logger');
+const {isLoggedIn} = require('../lib/isLoggedIn');
 
 
 /* GET home page. */
