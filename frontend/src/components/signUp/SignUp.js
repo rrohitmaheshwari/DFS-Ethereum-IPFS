@@ -34,7 +34,7 @@ class SignUp extends Component {
             if (!err) {
 
                 try {
-                        //is email already registered
+
 
                     console.log('Received values of form: ', values);
                     this.setState({loading: true});
