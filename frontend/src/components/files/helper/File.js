@@ -51,6 +51,7 @@ class File extends Component {
     onPress = (e) => {
 
         let data = this.props.data;
+        data.type= this.props.type;
 
         history.push('/file?'+queryString.stringify(data));
 
