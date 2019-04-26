@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
 const session = require('express-session');
+var fileUpload = require('express-fileupload');
 var mongoStore = require("connect-mongo")(session);
 const config = require('config');
 
@@ -44,6 +45,7 @@ app.use(session({
 }))
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(fileUpload());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

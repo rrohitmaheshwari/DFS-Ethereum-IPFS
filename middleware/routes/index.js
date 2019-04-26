@@ -3,6 +3,8 @@ let router = express.Router();
 const config = require('config');
 const logger = require('../config/logger');
 const {isLoggedIn} = require('../lib/isLoggedIn');
+var fs = require("fs");
+var request = require("request");
 
 
 /* GET home page. */
@@ -53,7 +55,7 @@ router.post('/register', async (req, res, next) => {
 
 /* POST call for Login user. */
 router.post('/login', async (req, res, next) => {
-    logger.info("[POST]/login",null,2);
+    logger.info("[POST]/login", null, 2);
 
     var findUser = () => {
         return new Promise((resolve, reject) => {
@@ -85,7 +87,7 @@ router.post('/login', async (req, res, next) => {
 
 /* Get call for Logout */
 router.get('/logout', function (req, res, next) {
-    logger.info("[GET]/logout",null,2);
+    logger.info("[GET]/logout", null, 2);
     console.log(req.session.email);
     if (req.session.email) {
         // delete session object
@@ -93,8 +95,7 @@ router.get('/logout', function (req, res, next) {
         res.status(200);
         res.send({msg: 'User logged out Successfully'});
     }
-    else
-    {
+    else {
         res.status(403);
         res.send({msg: 'No user is logged in'});
     }
@@ -120,7 +121,7 @@ router.post('/checkEmailExists', async (req, res, next) => {
     };
     var result = await findUser();
 
-    if (result.length === 1 ) {
+    if (result.length === 1) {
         res.status(403);
         res.send({msg: 'Fail: Email Exists'});
     }
@@ -132,15 +133,15 @@ router.post('/checkEmailExists', async (req, res, next) => {
 
 //
 router.get('/fetchInboxIndress', function (req, res, next) {
-    logger.info("[GET]/fetchInboxIndress",null,2);
+    logger.info("[GET]/fetchInboxIndress", null, 2);
 
-        res.status(201);
-        res.send({msg: config.deployAddress});
-    
+    res.status(201);
+    res.send({msg: config.deployAddress});
+
 });
 
-router.get('/getAccount',isLoggedIn, async function (req, res, next) {
-    logger.info("[GET]/getAccount",null,2);
+router.get('/getAccount', isLoggedIn, async function (req, res, next) {
+    logger.info("[GET]/getAccount", null, 2);
 
     var findUser = () => {
         return new Promise((resolve, reject) => {
@@ -162,17 +163,97 @@ router.get('/getAccount',isLoggedIn, async function (req, res, next) {
 
     if (result.length === 1) {
         console.log(result);
-        let responseObj= {}
+        let responseObj = {}
         responseObj.address = result[0].address;
-        responseObj.publicKey =result[0].publicKey;
+        responseObj.publicKey = result[0].publicKey;
         res.status(200);
         res.send({responseObj});
-        
+
     }
     else {
         res.status(403);
         res.send({msg: 'Unable to Fetch Account Details'});
     }
-    
 });
+
+
+router.post('/uploadFile', function (req, res, next) {
+    console.log("Server trying to upload... " + req.files.file.name)
+
+    try {
+
+
+        var options = {
+            method: 'POST',
+            url: 'https://ipfs.infura.io:5001/api/v0/block/put',
+            headers:
+                {
+                    'cache-control': 'no-cache',
+                    'content-type': 'multipart/form-data;'
+                },
+            formData:
+                {
+                    file:
+                        {
+                            value: JSON.stringify(req.files.file),
+                            options:
+                                {
+                                    filename: req.files.file.name,
+                                    contentType: null
+                                }
+                        },
+                    'Content-Type': 'multipart/form-data'
+                }
+        };
+
+        request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+            console.log("succcess");
+            console.log(body);
+            res.status(200);
+            res.send(body);
+        });
+    }
+    catch (err) {
+        console.log(err);
+    }
+
+
+});
+
+
+
+router.get('/downloadFile', function (req, res, next) {
+
+    console.log(req.query.hash);
+
+    try {
+
+
+        console.log(`https://ipfs.infura.io:5001/api/v0/block/get?arg=${req.query.hash}`);
+
+        var options = {
+            method: 'POST',
+            url: `https://ipfs.infura.io:5001/api/v0/block/get?arg=${req.query.hash}`,
+            headers:
+                {
+                    'cache-control': 'no-cache'
+                },
+        };
+
+        request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+            console.log("succcess");
+            let file =Buffer.from(JSON.parse(body).data);
+            res.status(200);
+            res.send(file);
+        });
+    }
+    catch (err) {
+        console.log(err);
+    }
+
+});
+
+
 module.exports = router;
