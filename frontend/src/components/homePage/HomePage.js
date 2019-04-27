@@ -69,7 +69,7 @@ class HomePage extends Component {
             history.push('/home/profile');
         }
         else if (e.key === '6') {
-            history.push('/home/analytic');
+            history.push('/home/dashboard');
         }
     };
 
@@ -117,7 +117,7 @@ class HomePage extends Component {
                 selectedKey = '5';
                 break;
 
-            case '/home/analytic':
+            case '/home/dashboard':
                 selectedKey = '6';
                 break;
 
@@ -175,7 +175,7 @@ class HomePage extends Component {
                                 </SubMenu>
                                 <Menu.Item key="5"><span><Icon type="smile"/><span>Profile</span></span></Menu.Item>
                                 <Menu.Item key="6"><span><Icon
-                                    type="radar-chart"/><span>Analytics</span></span></Menu.Item>
+                                    type="radar-chart"/><span>Dashboard</span></span></Menu.Item>
                             </Menu>
                         </Sider>
                         <Layout style={{padding: '25px 24px 24px', marginLeft: marginLeft, marginTop: 64}}>
@@ -213,7 +213,7 @@ class HomePage extends Component {
 
                                     <Route exact path="/home/newFile" component={NewFile}/>
                                     <Route exact path="/home/profile" component={Profile}/>
-                                    <Route exact path="/home/analytic" component={Analytic}/>
+                                    <Route exact path="/home/dashboard" component={Analytic}/>
                                     <Route path="/file" component={FileDetailed}/>
 
                                 </Router>
