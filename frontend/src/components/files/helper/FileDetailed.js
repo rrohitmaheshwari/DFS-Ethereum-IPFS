@@ -120,6 +120,9 @@ class FileDetailed extends Component {
                 console.log('Received values of form: ', values);
                 //await api call to get the file and the decrypt it using Private Key( values.PrivateKey )
 
+
+
+
                 setTimeout(function () {
                     message.success('File Downloaded');
                     this.setState({loading: false});

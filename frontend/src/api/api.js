@@ -14,9 +14,18 @@ export const RESTService = {
     login,
     getProfile,
     getAccount,
-    uploadFile
+    uploadFile,
+    downloadFile
 
 };
+
+
+
+
+function downloadFile() {
+    let url = api + '/fetchInboxAddress';
+    return axiosGet(url);
+}
 
 
 function uploadFile(formData) {

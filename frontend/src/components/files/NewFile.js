@@ -7,8 +7,7 @@ import { history } from "../../helper/history";
 import { simpleAction } from "../../actions/simpleAction";
 import { connect } from "react-redux";
 import { RESTService } from "../../api/api";
-import axios from 'axios';
-// var request = require("request");
+
 
 
 const Dragger = Upload.Dragger;
@@ -128,7 +127,7 @@ class NewFile extends Component {
                     formData.append('name', this.state.fileName);
 
 
-                    let fileResponse = await axios.post('http://localhost:3001/uploadFile', formData);
+                    let fileResponse = await RESTService.uploadFile(formData)
 
 
                     //*******call to smart contract with required fields-> fromAddress,toAddress, hash, fileName, timeStamp
