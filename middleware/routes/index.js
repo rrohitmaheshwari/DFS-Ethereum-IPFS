@@ -67,7 +67,8 @@ router.post('/login', async (req, res, next) => {
                 .toArray(function (err, data) {
                     err
                         ? reject(err)
-                        : resolve(data);res
+                        : resolve(data);
+                    res
                 });
         });
     };
@@ -138,7 +139,7 @@ router.post('/checkUserExists', async (req, res, next) => {
 
 
     var result = await findUser();
-    var resultByPublickKey  = await findUserbyPublickKey();
+    var resultByPublickKey = await findUserbyPublickKey();
 
     if (result.length === 1 || resultByPublickKey.length === 1) {
         res.status(403);
@@ -196,7 +197,7 @@ router.post('/getAccount', isLoggedIn, async function (req, res, next) {
 });
 
 
-router.post('/uploadFile',isLoggedIn, function (req, res, next) {
+router.post('/uploadFile', isLoggedIn, function (req, res, next) {
     console.log("Server trying to upload... " + req.files.file.name)
 
     try {
@@ -241,11 +242,7 @@ router.post('/uploadFile',isLoggedIn, function (req, res, next) {
 });
 
 
-
-
-
-router.get('/getProfile',isLoggedIn, async function (req, res, next) {
-
+router.get('/getProfile', isLoggedIn, async function (req, res, next) {
 
 
     var findUser = () => {
@@ -258,19 +255,20 @@ router.get('/getProfile',isLoggedIn, async function (req, res, next) {
                 .toArray(function (err, data) {
                     err
                         ? reject(err)
-                        : resolve(data);res
+                        : resolve(data);
+                    res
                 });
         });
     };
 
     var result = await findUser();
-    
-    let response={};
-    response.firstName= result[0].firstName
-    response.lastName= result[0].lastName,
-    response.email= result[0].email,
-    response.publicKey= result[0].publicKey
-     
+
+    let response = {};
+    response.firstName = result[0].firstName;
+    response.lastName = result[0].lastName;
+    response.email = result[0].email;
+    response.publicKey = result[0].publicKey;
+
 
     res.status(200);
     res.send(response);
@@ -278,7 +276,7 @@ router.get('/getProfile',isLoggedIn, async function (req, res, next) {
 });
 
 
-router.get('/downloadFile',isLoggedIn, function (req, res, next) {
+router.get('/downloadFile', isLoggedIn, function (req, res, next) {
 
     console.log(req.query.hash);
 
@@ -299,7 +297,7 @@ router.get('/downloadFile',isLoggedIn, function (req, res, next) {
         request(options, function (error, response, body) {
             if (error) throw new Error(error);
             console.log("succcess");
-            let file =Buffer.from(JSON.parse(body).data);
+            let file = Buffer.from(JSON.parse(body).data);
             res.status(200);
             res.send(file);
         });
