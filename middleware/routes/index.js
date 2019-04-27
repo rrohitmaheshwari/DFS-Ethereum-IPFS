@@ -242,6 +242,42 @@ router.post('/uploadFile', function (req, res, next) {
 
 
 
+
+
+router.get('/getProfile',isLoggedIn, async function (req, res, next) {
+
+
+
+    var findUser = () => {
+        return new Promise((resolve, reject) => {
+
+            req.db
+                .collection('users')
+                .find({email: req.session.email})
+                .limit(1)
+                .toArray(function (err, data) {
+                    err
+                        ? reject(err)
+                        : resolve(data);res
+                });
+        });
+    };
+
+    var result = await findUser();
+    
+    let response={};
+    response.firstName= result[0].firstName
+    response.lastName= result[0].lastName,
+    response.email= result[0].email,
+    response.publicKey= result[0].publicKey
+     
+
+    res.status(200);
+    res.send(response);
+
+});
+
+
 router.get('/downloadFile', function (req, res, next) {
 
     console.log(req.query.hash);
