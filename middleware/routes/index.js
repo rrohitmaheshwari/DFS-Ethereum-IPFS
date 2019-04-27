@@ -197,9 +197,11 @@ router.post('/getAccount', isLoggedIn, async function (req, res, next) {
 });
 
 
-router.post('/uploadFile', isLoggedIn, function (req, res, next) {
-    console.log("Server trying to upload... " + req.files.file.name)
-
+router.post('/uploadFile',isLoggedIn, function (req, res, next) {
+    console.log("Server trying to upload... " )
+    console.log("Server trying to upload... " + req)
+    console.log(req);
+    console.log("end");
     try {
 
 
@@ -236,6 +238,8 @@ router.post('/uploadFile', isLoggedIn, function (req, res, next) {
     }
     catch (err) {
         console.log(err);
+        res.status(403);
+        res.send({msg: "err"});
     }
 
 

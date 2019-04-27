@@ -7,6 +7,9 @@ import { history } from "../../helper/history";
 import { simpleAction } from "../../actions/simpleAction";
 import { connect } from "react-redux";
 import { RESTService } from "../../api/api";
+import axios from 'axios';
+// var request = require("request");
+
 
 const Dragger = Upload.Dragger;
 const {Text} = Typography;
@@ -75,8 +78,57 @@ class NewFile extends Component {
                     //*******if file is uploaded and we will get hash in return(or we could upload to ipfs from frontend only
 
 
+                    // let formData = new FormData();
+                    // formData.append('file', this.state.file);
+                    //
+                    // let receiverFileData = await RESTService.uploadFile(formData);
+                    // //
+                    //
+                    // try {
+                    //
+                    //
+                    //     var options = {
+                    //         method: 'POST',
+                    //         url: 'http://localhost:3001/uploadFile',
+                    //         headers:
+                    //             {
+                    //                 'cache-control': 'no-cache',
+                    //                 'content-type': 'multipart/form-data;'
+                    //             },
+                    //         formData:
+                    //             {
+                    //                 file:
+                    //                     {
+                    //                         value: JSON.stringify(this.state.file),
+                    //                         options:
+                    //                             {
+                    //                                 filename: this.state.fileName,
+                    //                                 contentType: null
+                    //                             }
+                    //                     },
+                    //                 'Content-Type': 'multipart/form-data'
+                    //             }
+                    //     };
+                    //
+                    //
+                    //
+                    //   await request(options, function (error, response, body) {
+                    //         if (error) throw new Error(error);
+                    //         console.log("succcess");
+                    //         console.log(body);
+                    //     });
+                    // }
+                    // catch (err) {
+                    //     console.log(err);
+                    // }
 
 
+                    let formData = new FormData();
+                    formData.append('file', this.state.file.file);
+                    formData.append('name', this.state.fileName);
+
+
+                    let fileResponse = await axios.post('http://localhost:3001/uploadFile', formData);
 
 
                     //*******call to smart contract with required fields-> fromAddress,toAddress, hash, fileName, timeStamp
@@ -105,9 +157,12 @@ class NewFile extends Component {
                     let obj = {}
                     obj.fromAddress = account[0];
                     obj.toAddress = receiverAddress;     //account that we get from the server by sending the email id
-                    obj.hash = "Hash that we get from sending to IPFS";
+                    obj.hash = fileResponse.data.Key;
                     obj.fileName = this.state.fileName;
                     obj.timeStamp = processedDate;
+
+                    console.log("obj");
+                    console.log(obj);
 
 
                     console.log('Getting inboxAddress');

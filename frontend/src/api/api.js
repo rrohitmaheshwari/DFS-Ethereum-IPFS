@@ -14,13 +14,20 @@ export const RESTService = {
     login,
     getProfile,
     getAccount,
+    uploadFile
 
 };
 
 
+function uploadFile(formData) {
+    let url = api + '/uploadFile';
+    return axiosPost(url, formData);
+}
+
+
 function login(data) {
     let url = api + '/login';
-    return axiosPost(url,data);
+    return axiosPost(url, data);
 }
 
 function fetchInboxAddress() {
@@ -36,20 +43,19 @@ function getProfile() {
 
 function getAccount(data) {
     let url = api + '/getAccount';
-    return axiosPost(url,data);
+    return axiosPost(url, data);
 }
 
 function checkUserExists(data) {
     let url = api + '/checkUserExists';
-    return axiosPost(url,data);
+    return axiosPost(url, data);
 }
 
 
 function register(data) {
     let url = api + '/register';
-    return axiosPost(url,data);
+    return axiosPost(url, data);
 }
-
 
 
 function axiosPost(url, data) {
