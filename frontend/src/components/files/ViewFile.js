@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    Card, Button, Typography
+    Card, Button, Typography, Empty
 } from 'antd';
 
 import File from './helper/File.js'
@@ -34,11 +34,15 @@ class ViewFile extends Component {
             }
         }
 
+        let isEmpty = false;
+        if (data.length === 0) {
+
+            isEmpty = true;
+        }
+
 
         return (
             <div className="AllFile">
-
-                {/*<Empty style={{marginTop: '10%'}}/>*/}
 
 
                 <Card bordered={false}
@@ -52,6 +56,12 @@ class ViewFile extends Component {
                           }}>New</Button>
                       </div>}
                 >
+
+                    {isEmpty &&
+                    <Empty style={{marginTop: '10%'}}/>
+                    }
+
+
                     {files.map((element, key) => {
                         if (element.fromAddress === element.toAddress) {
                             return (<File key={key} type={"self"} data={element}/>)

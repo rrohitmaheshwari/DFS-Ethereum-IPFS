@@ -34,6 +34,7 @@ class LoginPage extends Component {
                 console.log('Received values of form: ', values);
                 //await api call
 
+
                 setTimeout(function () {
                     message.success('Logged in Successfully');
                     history.push('/home/allFiles');
