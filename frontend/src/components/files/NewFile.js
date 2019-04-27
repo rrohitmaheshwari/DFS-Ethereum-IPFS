@@ -74,6 +74,11 @@ class NewFile extends Component {
 
                     //*******if file is uploaded and we will get hash in return(or we could upload to ipfs from frontend only
 
+
+
+
+
+
                     //*******call to smart contract with required fields-> fromAddress,toAddress, hash, fileName, timeStamp
                     //*******this will involve two call if sender is not self (update both Addresses account)
 

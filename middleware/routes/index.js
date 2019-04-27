@@ -196,7 +196,7 @@ router.post('/getAccount', isLoggedIn, async function (req, res, next) {
 });
 
 
-router.post('/uploadFile', function (req, res, next) {
+router.post('/uploadFile',isLoggedIn, function (req, res, next) {
     console.log("Server trying to upload... " + req.files.file.name)
 
     try {
@@ -278,7 +278,7 @@ router.get('/getProfile',isLoggedIn, async function (req, res, next) {
 });
 
 
-router.get('/downloadFile', function (req, res, next) {
+router.get('/downloadFile',isLoggedIn, function (req, res, next) {
 
     console.log(req.query.hash);
 
