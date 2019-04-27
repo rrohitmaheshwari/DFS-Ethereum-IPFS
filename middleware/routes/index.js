@@ -126,7 +126,7 @@ router.post('/checkEmailExists', async (req, res, next) => {
         res.send({msg: 'Fail: Email Exists'});
     }
     else {
-        res.status(201);
+        res.status(200);
         res.send({msg: 'Success: Email Not Exist'});
     }
 });
@@ -135,7 +135,7 @@ router.post('/checkEmailExists', async (req, res, next) => {
 router.get('/fetchInboxIndress', function (req, res, next) {
     logger.info("[GET]/fetchInboxIndress", null, 2);
 
-    res.status(201);
+    res.status(200);
     res.send({msg: config.deployAddress});
 
 });
@@ -177,7 +177,7 @@ router.get('/getAccount', isLoggedIn, async function (req, res, next) {
 });
 
 
-router.post('/uploadFile', function (req, res, next) {
+router.post('/uploadFile', isLoggedIn, function (req, res, next) {
     console.log("Server trying to upload... " + req.files.file.name)
 
     try {
@@ -223,7 +223,7 @@ router.post('/uploadFile', function (req, res, next) {
 
 
 
-router.get('/downloadFile', function (req, res, next) {
+router.get('/downloadFile', isLoggedIn, function (req, res, next) {
 
     console.log(req.query.hash);
 
