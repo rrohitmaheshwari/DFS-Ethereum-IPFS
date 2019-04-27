@@ -4,6 +4,7 @@ import {
 } from 'antd';
 import { message } from "antd/lib/index";
 import web3 from "../../web3";
+import { connect } from "react-redux";
 
 
 class Analytic extends Component {
@@ -11,11 +12,13 @@ class Analytic extends Component {
     state = {
         account: '',
         balance: '0',
+        selfAddress: '',
     };
 
 
     async componentDidMount() {
         let accounts = await web3.eth.getAccounts();
+        this.setState({selfAddress: accounts[0]});
         let balance = await web3.utils.fromWei(await web3.eth.getBalance(accounts[0]), 'ether') + ' ETH';
         if (accounts.length === 0) {
             message.error('Unable to access Metamask');
@@ -31,6 +34,29 @@ class Analytic extends Component {
     render() {
         let account = this.state.account;
         let balance = this.state.balance;
+        let {selfAddress} = this.state;
+
+        const {simpleReducer} = this.props;
+
+        let data = simpleReducer.result;
+        let fsent = 0;
+        let freceived = 0;
+        let fsaved = 0;
+
+
+        console.log(data);
+        //filer file according to All File, Received Files, Sent Files, My Files
+        for (let j = data.length - 1; j >= 0; j--) {
+            if (data[j].toAddress !== selfAddress) {
+                fsent++;
+            }
+            else if (data[j].fromAddress !== selfAddress) {
+                freceived++
+            }
+            else if (data[j].fromAddress === data[j].toAddress) {
+                fsaved++
+            }
+        }
 
 
         return (
@@ -40,7 +66,7 @@ class Analytic extends Component {
                     <Col span={8}>
                         <Card className="boxShadow" title="Files Sent">
                             <Statistic
-                                value={11}
+                                value={fsent}
                                 valueStyle={{color: '#3f8600'}}
                                 prefix={<Icon type="arrow-up"/>}
                             />
@@ -49,7 +75,7 @@ class Analytic extends Component {
                     <Col span={8}>
                         <Card className="boxShadow" title="Files Received">
                             <Statistic
-                                value={9}
+                                value={freceived}
                                 valueStyle={{color: '#0026ff'}}
                                 prefix={<Icon type="arrow-down"/>}
                             />
@@ -58,7 +84,7 @@ class Analytic extends Component {
                     <Col span={8}>
                         <Card className="boxShadow" title="Files Saved">
                             <Statistic
-                                value={9}
+                                value={fsaved}
                                 valueStyle={{color: '#ff9027'}}
                                 prefix={<Icon type="save"/>}
                             />
@@ -95,4 +121,13 @@ class Analytic extends Component {
 }
 
 
-export default Analytic;
+// export default Analytic;
+
+function mapStateToProps(state) {
+    const {simpleReducer} = state;
+    return {
+        simpleReducer
+    };
+}
+
+export default connect(mapStateToProps)(Analytic);
