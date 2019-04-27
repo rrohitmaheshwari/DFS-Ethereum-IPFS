@@ -13,6 +13,7 @@ export const RESTService = {
     register,
     login,
     getProfile,
+    getAccount,
 
 };
 
@@ -30,6 +31,12 @@ function fetchInboxAddress() {
 function getProfile() {
     let url = api + '/getProfile';
     return axiosGet(url);
+}
+
+
+function getAccount(data) {
+    let url = api + '/getAccount';
+    return axiosPost(url,data);
 }
 
 function checkUserExists(data) {

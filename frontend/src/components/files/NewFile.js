@@ -6,6 +6,7 @@ import InboxABI from '../../helper/build/Inbox.json';
 import { history } from "../../helper/history";
 import { simpleAction } from "../../actions/simpleAction";
 import { connect } from "react-redux";
+import { RESTService } from "../../api/api";
 
 const Dragger = Upload.Dragger;
 const {Text} = Typography;
@@ -32,7 +33,7 @@ class NewFile extends Component {
         console.log("ok")
         console.log(file);
         console.log(file.file);
-        message.success(`${file.file.name} file uploaded successfully.`);
+        message.success(`${file.file.name} file selected successfully.`);
         this.setState({
             fileName: file.file.name,
             fileSize: file.file.size,
@@ -53,13 +54,21 @@ class NewFile extends Component {
 
 
                     //to be fetched from config file or from the server
-                    const inboxFactoryAddress = '0xFa5cfcaA2eF44eF0cF77A9C9c3fa5673c59cFDa6';
+
+                    let inboxFactoryAddress = await RESTService.fetchInboxAddress();
+                    inboxFactoryAddress = inboxFactoryAddress.data.msg;
 
                     let account = await web3.eth.getAccounts();
 
                     console.log('accounts : ' + account[0]);
 
                     //*******await api call to check for valid email address and return its public key
+
+                    let receiverData = await RESTService.getAccount({email: values.email});
+
+                    receiverData = receiverData.data;
+                    console.log("receiverData");
+                    console.log(receiverData);
 
                     //*******encrypt the file with the public key
 
@@ -82,7 +91,11 @@ class NewFile extends Component {
 
 
                     //Receiver's address to be fetched from serve by email id
-                    let receiverAddress = '0x3552CE099Da8e41BFA5F813dFF0226bF8855de0B'
+                    let receiverAddress = receiverData.responseObj.address;
+                    console.log("receiverAddress");
+                    console.log(receiverAddress);
+                    console.log(typeof(receiverAddress));
+
 
                     let obj = {}
                     obj.fromAddress = account[0];
@@ -133,7 +146,6 @@ class NewFile extends Component {
                     else {
 
 
-
                         let insert_message = async function () {
                             return await Promise.all([instanceInbox.methods.insertMessage(obj.fromAddress, obj.toAddress, obj.hash, obj.fileName, obj.timeStamp).send({from: account[0]})
                                 , rinstanceInbox.methods.insertMessage(obj.fromAddress, obj.toAddress, obj.hash, obj.fileName, obj.timeStamp).send({from: account[0]})]);
@@ -152,6 +164,7 @@ class NewFile extends Component {
 
                     history.push('/home/allFiles');
                 } catch (err) {
+                    console.log(err);
                     this.setState({loading: false});
                     message.error('Message not sent!');
                 }

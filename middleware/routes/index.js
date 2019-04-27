@@ -159,8 +159,9 @@ router.get('/fetchInboxAddress', function (req, res, next) {
 
 });
 
-router.get('/getAccount', isLoggedIn, async function (req, res, next) {
+router.post('/getAccount', isLoggedIn, async function (req, res, next) {
     logger.info("[GET]/getAccount", null, 2);
+
 
     var findUser = () => {
         return new Promise((resolve, reject) => {
@@ -181,7 +182,6 @@ router.get('/getAccount', isLoggedIn, async function (req, res, next) {
 
 
     if (result.length === 1) {
-        console.log(result);
         let responseObj = {}
         responseObj.address = result[0].address;
         responseObj.publicKey = result[0].publicKey;
