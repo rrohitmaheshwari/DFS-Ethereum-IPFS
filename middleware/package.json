@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "mocha"
   },
   "dependencies": {
     "config": "^3.1.0",
@@ -17,9 +18,14 @@
     "express-session": "^1.16.1",
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
+    "mocha": "^6.1.4",
     "morgan": "~1.9.0",
     "nodemon": "^1.18.11",
     "request": "^2.88.0",
     "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "expect": "^24.7.1",
+    "supertest": "^4.0.2"
   }
 }
