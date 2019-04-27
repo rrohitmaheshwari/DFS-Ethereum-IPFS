@@ -38,7 +38,7 @@ class Analytic extends Component {
 
                 <Row>
                     <Col span={8}>
-                        <Card className="boxShadow" title="Sent">
+                        <Card className="boxShadow" title="Files Sent">
                             <Statistic
                                 value={11}
                                 valueStyle={{color: '#3f8600'}}
@@ -47,7 +47,7 @@ class Analytic extends Component {
                         </Card>
                     </Col>
                     <Col span={8}>
-                        <Card className="boxShadow" title="Received">
+                        <Card className="boxShadow" title="Files Received">
                             <Statistic
                                 value={9}
                                 valueStyle={{color: '#0026ff'}}
@@ -56,7 +56,7 @@ class Analytic extends Component {
                         </Card>
                     </Col>
                     <Col span={8}>
-                        <Card className="boxShadow" title="Saved">
+                        <Card className="boxShadow" title="Files Saved">
                             <Statistic
                                 value={9}
                                 valueStyle={{color: '#ff9027'}}
