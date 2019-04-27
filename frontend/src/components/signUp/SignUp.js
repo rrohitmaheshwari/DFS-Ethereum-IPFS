@@ -82,6 +82,8 @@ class SignUp extends Component {
 
                     console.log('Creating instanceInboxFactory:' + instanceInboxFactory);
 
+                    message.info('Confirm transaction using Metamask');
+
                     await instanceInboxFactory.methods.createInbox().send({from: account[0]});
 
                     console.log('Created instanceInboxFactory');

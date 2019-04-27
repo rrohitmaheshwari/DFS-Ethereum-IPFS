@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
     Layout, Menu, Button, Icon
 } from 'antd';
-import { message } from "antd/lib/index";
+import { Form, message } from "antd/lib/index";
 import { history } from "../../helper/history";
 import { Router, Route } from 'react-router-dom';
 import ViewFile from "../files/ViewFile";
@@ -11,8 +11,8 @@ import Analytic from "../analytic/Analytic";
 import NewFile from "../files/NewFile";
 import FileDetailed from "../files/helper/FileDetailed";
 import web3 from '../../web3';
-import InboxFactoryABI from '../../helper/build/InboxFactory.json';
-import InboxABI from '../../helper/build/Inbox.json';
+import { connect } from "react-redux";
+import { simpleAction } from "../../actions/simpleAction";
 
 const SubMenu = Menu.SubMenu;
 
@@ -24,7 +24,6 @@ class HomePage extends Component {
     state = {
         itemKey: '1',
         collapsed: false,
-        data: [],
         selfAddress: '',
         loading: true
     };
@@ -32,51 +31,13 @@ class HomePage extends Component {
 
     async componentDidMount() {
 
-        //to be fetched from config file or from the server
-        const inboxFactoryAddress = '0xFa5cfcaA2eF44eF0cF77A9C9c3fa5673c59cFDa6';
-        console.log('inboxFactoryAddress:' + inboxFactoryAddress)
 
         let accounts = await web3.eth.getAccounts();
-        this.setState({selfAddress: accounts[0]});
+        this.setState({selfAddress: accounts[0], loading: true});
+        const {dispatch} = this.props;
 
-        console.log('accounts:' + accounts[0])
-
-        let instanceInboxFactory = new web3.eth.Contract(
-            JSON.parse(InboxFactoryABI.interface),
-            inboxFactoryAddress
-        );
-
-        let inboxAddress = await instanceInboxFactory.methods.getDeployedInbox().call({from: accounts[0]});
-        console.log('inboxAddress:' + inboxAddress)
-
-        let instanceInbox = new web3.eth.Contract(
-            JSON.parse(InboxABI.interface),
-            inboxAddress
-        );
-
-        let inboxDataCount = await instanceInbox.methods.getMessagesCount().call({from: accounts[0]});
-
-        console.log('inboxDataCount:' + inboxDataCount)
-
-        const inboxData = await Promise.all(
-            Array(parseInt(inboxDataCount))
-                .fill()
-                .map((element, index) => {
-                    return instanceInbox.methods.getMessages(index).call({from: accounts[0]});
-                })
-        );
-
-        let temp = [];
-        for (let i = 0; i < inboxData.length; i++) {
-            let tempObj = {};
-            tempObj.fromAddress = inboxData[i][0];
-            tempObj.toAddress = inboxData[i][1];
-            tempObj.hash = inboxData[i][2];
-            tempObj.fileName = inboxData[i][3];
-            tempObj.timeStamp = inboxData[i][4];
-            temp.push(tempObj);
-        }
-        this.setState({data: temp, loading: false});
+        await dispatch(simpleAction());
+        this.setState({loading: false});
 
 
     }
@@ -120,6 +81,11 @@ class HomePage extends Component {
     };
 
     render() {
+        const {simpleReducer} = this.props;
+
+        console.log("simpleReducer");
+        console.log(simpleReducer);
+
 
         let marginLeft = 200;
         if (this.state.collapsed) {
@@ -222,25 +188,25 @@ class HomePage extends Component {
                                 <Router history={history}>
                                     <Route exact path="/home/allFiles"
                                            render={(props) => <ViewFile {...props} fileType={"All Files"}
-                                                                        data={this.state.data}
+                                                                        data={simpleReducer.result}
                                                                         loading={this.state.loading}
                                                                         selfAddress={this.state.selfAddress}/>}
                                     />
                                     <Route exact path="/home/receivedFiles"
                                            render={(props) => <ViewFile {...props} fileType={"Received Files"}
-                                                                        data={this.state.data}
+                                                                        data={simpleReducer.result}
                                                                         loading={this.state.loading}
                                                                         selfAddress={this.state.selfAddress}/>}
                                     />
                                     <Route exact path="/home/sentFiles"
                                            render={(props) => <ViewFile {...props} fileType={"Sent Files"}
-                                                                        data={this.state.data}
+                                                                        data={simpleReducer.result}
                                                                         loading={this.state.loading}
                                                                         selfAddress={this.state.selfAddress}/>}
                                     />
                                     <Route exact path="/home/myFiles"
                                            render={(props) => <ViewFile {...props} fileType={"My Files"}
-                                                                        data={this.state.data}
+                                                                        data={simpleReducer.result}
                                                                         loading={this.state.loading}
                                                                         selfAddress={this.state.selfAddress}/>}
                                     />
@@ -265,4 +231,14 @@ class HomePage extends Component {
 }
 
 
-export default HomePage;
+// export default HomePage;
+//
+//
+function mapStateToProps(state) {
+    const {simpleReducer} = state;
+    return {
+        simpleReducer
+    };
+}
+
+export default connect(mapStateToProps)(HomePage);

@@ -5,6 +5,8 @@ import {
 import web3 from '../../web3';
 import { history } from '../../helper/history.js';
 import { RESTService } from "../../api/api.js";
+import { simpleAction } from '../../actions/simpleAction';
+import { connect } from "react-redux";
 
 
 class LoginPage extends Component {
@@ -36,6 +38,8 @@ class LoginPage extends Component {
                 console.log('Received values of form: ', values);
                 //await api call
 
+
+
                 let data={};
                 data.email = values.email;
                 data.password = values.password;
@@ -50,6 +54,10 @@ class LoginPage extends Component {
 
 
                     message.success('Logged in Successfully');
+                    //call action to fetch details
+                    const {dispatch} = this.props;
+                    await dispatch(simpleAction());
+
                     history.push('/home/allFiles');
                 }
                 catch (err) {
@@ -115,4 +123,15 @@ class LoginPage extends Component {
 }
 
 
-export default Form.create()(LoginPage);
+// export default Form.create()(LoginPage);
+
+
+
+function mapStateToProps(state) {
+    const {simpleReducer} = state;
+    return {
+        simpleReducer
+    };
+}
+
+export default connect(mapStateToProps)(Form.create()(LoginPage));

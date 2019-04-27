@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Upload, Icon, message, Form, Input, Row, Col, Button, Spin, Typography,Card } from 'antd';
+import { Upload, Icon, message, Form, Input, Row, Col, Button, Spin, Typography, Card } from 'antd';
 import web3 from '../../web3';
 import InboxFactoryABI from '../../helper/build/InboxFactory.json';
 import InboxABI from '../../helper/build/Inbox.json';
 import { history } from "../../helper/history";
+import { simpleAction } from "../../actions/simpleAction";
+import { connect } from "react-redux";
 
 const Dragger = Upload.Dragger;
 const {Text} = Typography;
@@ -122,11 +124,14 @@ class NewFile extends Component {
 
                     //address fromAddress, address toAddress, string hash, string fileName, string timeStamp
 
+                    message.info('Confirm transaction using Metamask');
+
                     if (account[0] === receiverAddress) {
                         await instanceInbox.methods.insertMessage(obj.fromAddress, obj.toAddress, obj.hash, obj.fileName, obj.timeStamp).send({from: account[0]});
                         console.log('call to self succeeded');
                     }
                     else {
+
 
 
                         let insert_message = async function () {
@@ -142,6 +147,10 @@ class NewFile extends Component {
 
                     this.setState({loading: false});
                     message.success('Uploaded Successfully');
+                    const {dispatch} = this.props;
+                    await dispatch(simpleAction());
+
+                    history.push('/home/allFiles');
                 } catch (err) {
                     this.setState({loading: false});
                     message.error('Message not sent!');
@@ -191,59 +200,59 @@ class NewFile extends Component {
                           </div>}
 
                     >
-                    <Row type="flex" justify="space-around" align="middle" className="fullHeight">
-                        <Col span={12}>
-                            <div style={{marginBottom: 10}}>
-                                <Dragger {...props} >
-                                    <p className="ant-upload-drag-icon">
-                                        <Icon type="inbox"/>
-                                    </p>
-                                    <p className="ant-upload-text">Click or drag file to this area to upload</p>
-                                    <p className="ant-upload-hint">Support for a single upload.</p>
-                                </Dragger>
-                            </div>
-
-                            <Form {...formItemLayout} onSubmit={this.handleSubmit} className="login-form">
-
-                                {this.state.showDetails &&
-                                <div>
-
-
-                                    <Form.Item label="File Name:">
-                                        <Input prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                               disabled={true}
-                                               value={this.state.fileName}
-                                        />
-                                    </Form.Item>
-
-                                    <Form.Item label="File Size:">
-                                        <Input prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                               disabled={true}
-                                               value={this.state.fileSize}
-                                        />
-                                    </Form.Item>
-
-                                    <Form.Item label="Receiver Email:">
-                                        {getFieldDecorator('email', {
-                                            rules: [{required: true, message: 'Please enter Receiver\'s email!'}],
-                                        })(
-                                            <Input prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                                   placeholder="Receiver email"/>
-                                        )}
-                                    </Form.Item>
-
-                                    <Form.Item style={{marginLeft: '43%'}}>
-                                        <Button className="alignCenter" type="primary" htmlType="submit">
-                                            Upload & Send
-                                        </Button>
-                                    </Form.Item>
-
+                        <Row type="flex" justify="space-around" align="middle" className="fullHeight">
+                            <Col span={12}>
+                                <div style={{marginBottom: 10}}>
+                                    <Dragger {...props} >
+                                        <p className="ant-upload-drag-icon">
+                                            <Icon type="inbox"/>
+                                        </p>
+                                        <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                                        <p className="ant-upload-hint">Support for a single upload.</p>
+                                    </Dragger>
                                 </div>
-                                }
 
-                            </Form>
-                        </Col>
-                    </Row>
+                                <Form {...formItemLayout} onSubmit={this.handleSubmit} className="login-form">
+
+                                    {this.state.showDetails &&
+                                    <div>
+
+
+                                        <Form.Item label="File Name:">
+                                            <Input prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                                                   disabled={true}
+                                                   value={this.state.fileName}
+                                            />
+                                        </Form.Item>
+
+                                        <Form.Item label="File Size:">
+                                            <Input prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                                                   disabled={true}
+                                                   value={this.state.fileSize}
+                                            />
+                                        </Form.Item>
+
+                                        <Form.Item label="Receiver Email:">
+                                            {getFieldDecorator('email', {
+                                                rules: [{required: true, message: 'Please enter Receiver\'s email!'}],
+                                            })(
+                                                <Input prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                                                       placeholder="Receiver email"/>
+                                            )}
+                                        </Form.Item>
+
+                                        <Form.Item style={{marginLeft: '43%'}}>
+                                            <Button className="alignCenter" type="primary" htmlType="submit">
+                                                Upload & Send
+                                            </Button>
+                                        </Form.Item>
+
+                                    </div>
+                                    }
+
+                                </Form>
+                            </Col>
+                        </Row>
 
                     </Card>
                 </Spin>
@@ -256,5 +265,15 @@ class NewFile extends Component {
     }
 }
 
+// export default Form.create()(NewFile);
 
-export default Form.create()(NewFile);
+function mapStateToProps(state) {
+    const {simpleReducer} = state;
+    return {
+        simpleReducer
+    };
+}
+
+export default connect(mapStateToProps)(Form.create()(NewFile));
+
+
