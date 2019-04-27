@@ -93,6 +93,20 @@ class SignUp extends Component {
                     //create new user by sending all information to the server( Do Not Send the Private Key)
                     console.log('Created inboxAddress:' + inboxAddress);
 
+
+                    let registerUser = {
+                        firstName: values.fname,
+                        lastName: values.lname,
+                        email: values.email,
+                        password: values.password,
+                        publicKey: values.publicKey,
+                        address: inboxAddress
+                    };
+
+
+                    await RESTService.register(registerUser);
+
+
                     message.success('Registered Successfully');
                     message.success('Inbox Address:' + inboxAddress);
 

@@ -9,7 +9,9 @@ axios.defaults.withCredentials = true;
 
 export const RESTService = {
     fetchInboxAddress,
-    checkUserExists
+    checkUserExists,
+    register
+
 };
 
 function fetchInboxAddress() {
@@ -19,6 +21,12 @@ function fetchInboxAddress() {
 
 function checkUserExists(data) {
     let url = api + '/checkUserExists';
+    return axiosPost(url,data);
+}
+
+
+function register(data) {
+    let url = api + '/register';
     return axiosPost(url,data);
 }
 
