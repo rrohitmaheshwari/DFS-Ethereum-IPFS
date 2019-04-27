@@ -4,12 +4,14 @@ import {
 } from 'antd';
 import web3 from '../../web3';
 import { history } from '../../helper/history.js';
+import { RESTService } from "../../api/api.js";
 
 
 class LoginPage extends Component {
     state = {
         loading: false,
-        metamask: true
+        metamask: true,
+        account:''
     };
 
 
@@ -28,17 +30,33 @@ class LoginPage extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
+        this.props.form.validateFields(async (err, values) => {
             if (!err) {
                 // this.setState({loading: true});
                 console.log('Received values of form: ', values);
                 //await api call
 
+                let data={};
+                data.email = values.email;
+                data.password = values.password;
+                data.address= this.state.account;
 
-                setTimeout(function () {
+
+
+                try {
+
+
+                    await RESTService.login(data);
+
+
                     message.success('Logged in Successfully');
                     history.push('/home/allFiles');
-                }, 1000);
+                }
+                catch (err) {
+                    this.setState({loading: false});
+                    message.error('Invalid Credentials!');
+                }
+
 
             }
             else {

@@ -67,14 +67,14 @@ router.post('/login', async (req, res, next) => {
                 .toArray(function (err, data) {
                     err
                         ? reject(err)
-                        : resolve(data);
+                        : resolve(data);res
                 });
         });
     };
 
     var result = await findUser();
 
-    if (result.length === 1 && result[0].password === req.body.password) {
+    if (result.length === 1 && result[0].password === req.body.password && result[0].address === req.body.address) {
         req.session.email = req.body.email;
         res.status(200);
         res.send({msg: 'User logged in Successfully'});

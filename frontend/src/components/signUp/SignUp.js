@@ -101,7 +101,7 @@ class SignUp extends Component {
                         email: values.email,
                         password: values.password,
                         publicKey: values.publicKey,
-                        address: inboxAddress
+                        address: account[0]
                     };
 
 
