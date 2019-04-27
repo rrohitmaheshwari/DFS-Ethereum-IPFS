@@ -6,6 +6,8 @@ import web3 from '../../web3';
 import EthCrypto from 'eth-crypto';
 import InboxFactoryABI from '../../helper/build/InboxFactory.json';
 
+import { RESTService } from "../../api/api.js";
+
 
 class SignUp extends Component {
     state = {
@@ -40,11 +42,35 @@ class SignUp extends Component {
                     this.setState({loading: true});
 
                     //to be fetched from config file or from the server
-                    const inboxFactoryAddress = '0xFa5cfcaA2eF44eF0cF77A9C9c3fa5673c59cFDa6';
+                    // const inboxFactoryAddress = '0xFa5cfcaA2eF44eF0cF77A9C9c3fa5673c59cFDa6';
+
+                    let inboxFactoryAddress = await RESTService.fetchInboxAddress();
+                    inboxFactoryAddress = inboxFactoryAddress.data.msg;
+                    // console.log("iFA:" + iFA);
+                    console.log("inboxFactoryAddress");
+                    console.log(inboxFactoryAddress);
 
 
                     let account = await web3.eth.getAccounts();
-                    //check if email id & public key has already been registered
+                    //check if email id has already been registered
+
+                    let data = {};
+                    data.email = values.email;
+                    data.publicKey = values.publicKey;
+                    console.log("before checkUserExists");
+                    let checkUserExists;
+                    try {
+                        checkUserExists = await RESTService.checkUserExists(data);
+                    }
+                    catch (err) {
+
+                        if (err.status === 403) {
+                            this.setState({loading: false});
+                            message.error('User already exists');
+                            return;
+                        }
+                    }
+
 
                     console.log('account:' + account[0]);
                     //create entry in the blockchain Inbox Factory
@@ -230,10 +256,17 @@ class SignUp extends Component {
 
 
                                 <Form.Item label="Public Key" className="marginBottom0">
-                                    <Input prefix={<Icon type="property-safety" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                           type="account" placeholder="Public Key" value={publicKey}
-                                           disabled={true}
-                                    />
+
+                                    {getFieldDecorator('publicKey', {
+                                        rules: [{}],
+                                        initialValue: publicKey,
+                                    })(
+                                        <Input
+                                            prefix={<Icon type="property-safety" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                                            type="account" placeholder="Public Key"
+                                            disabled={true}
+                                        />
+                                    )}
                                 </Form.Item>
 
                                 <Form.Item label="Address"

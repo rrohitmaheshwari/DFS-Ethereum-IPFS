@@ -129,9 +129,9 @@ describe('Login Test', () => {
             });
     });
 
-    it('GET: /fetchInboxIndress :FetchInbox Address', (done) => {
+    it('GET: /fetchInboxAddress :FetchInbox Address', (done) => {
         request(app)
-            .get('/fetchInboxIndress')
+            .get('/fetchInboxAddress')
             .expect(200)
             .end((err, res) => {
                 console.log(err);

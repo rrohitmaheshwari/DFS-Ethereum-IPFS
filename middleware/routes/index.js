@@ -102,15 +102,15 @@ router.get('/logout', function (req, res, next) {
 });
 
 /* POST call to check whether email exists or not. */
-router.post('/checkEmailExists', async (req, res, next) => {
-    logger.info("[POST]/checkEmailExists");
+router.post('/checkUserExists', async (req, res, next) => {
+    logger.info("[POST]/checkUserExists");
 
     var findUser = () => {
         return new Promise((resolve, reject) => {
 
             req.db
                 .collection('users')
-                .find({email: req.body.email})
+                .find({email: req.body.email})    //
                 .limit(1)
                 .toArray(function (err, data) {
                     err
@@ -119,11 +119,30 @@ router.post('/checkEmailExists', async (req, res, next) => {
                 });
         });
     };
-    var result = await findUser();
 
-    if (result.length === 1) {
+
+    var findUserbyPublickKey = () => {
+        return new Promise((resolve, reject) => {
+
+            req.db
+                .collection('users')
+                .find({publicKey: req.body.publicKey})    //
+                .limit(1)
+                .toArray(function (err, data) {
+                    err
+                        ? reject(err)
+                        : resolve(data);
+                });
+        });
+    };
+
+
+    var result = await findUser();
+    var resultByPublickKey  = await findUserbyPublickKey();
+
+    if (result.length === 1 || resultByPublickKey.length === 1) {
         res.status(403);
-        res.send({msg: 'Fail: Email Exists'});
+        res.send({msg: 'Fail: Email/Public Key Exists'});
     }
     else {
         res.status(200);
@@ -132,8 +151,8 @@ router.post('/checkEmailExists', async (req, res, next) => {
 });
 
 //
-router.get('/fetchInboxIndress', function (req, res, next) {
-    logger.info("[GET]/fetchInboxIndress", null, 2);
+router.get('/fetchInboxAddress', function (req, res, next) {
+    logger.info("[GET]/fetchInboxAddress", null, 2);
 
     res.status(200);
     res.send({msg: config.deployAddress});
@@ -177,7 +196,7 @@ router.get('/getAccount', isLoggedIn, async function (req, res, next) {
 });
 
 
-router.post('/uploadFile', isLoggedIn, function (req, res, next) {
+router.post('/uploadFile', function (req, res, next) {
     console.log("Server trying to upload... " + req.files.file.name)
 
     try {
@@ -223,7 +242,7 @@ router.post('/uploadFile', isLoggedIn, function (req, res, next) {
 
 
 
-router.get('/downloadFile', isLoggedIn, function (req, res, next) {
+router.get('/downloadFile', function (req, res, next) {
 
     console.log(req.query.hash);
 
