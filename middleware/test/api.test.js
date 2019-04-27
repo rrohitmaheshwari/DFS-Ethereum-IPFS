@@ -73,7 +73,7 @@ describe('Login Test', () => {
         let invalidUser = {
             firstName: 'test',
             lastName: 'user',
-            email: 'testuser1@gmail.com',
+            email: 'testuser3@gmail.com',
             password: 'testuser',
             publicKey: 'pkey',
             address: 'address',
@@ -82,7 +82,7 @@ describe('Login Test', () => {
         request(app)
             .post('/register')
             .send(invalidUser)
-            .expect(200)
+            .expect(201)
             .end((err, res) => {
                 if (err) {
                     return done(err);
@@ -144,8 +144,8 @@ describe('Login Test', () => {
 
     it('GET: /getAccount : Get Valid Account', (done) => {
 
-        let email={
-            email:"testuser@gmail.com",
+        let email = {
+            email: "testuser@gmail.com",
         }
         let req = request(app).get('/getAccount').send(email);
 
@@ -162,8 +162,8 @@ describe('Login Test', () => {
 
     it('GET: /getAccount : Get Invalid Account', (done) => {
 
-        let email={
-            email:"testinvaliduser@gmail.com",
+        let email = {
+            email: "testinvaliduser@gmail.com",
         }
         let req = request(app).get('/getAccount').send(email);
 
