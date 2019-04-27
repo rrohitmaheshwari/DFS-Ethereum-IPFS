@@ -83,9 +83,6 @@ class HomePage extends Component {
     render() {
         const {simpleReducer} = this.props;
 
-        console.log("simpleReducer");
-        console.log(simpleReducer);
-
 
         let marginLeft = 200;
         if (this.state.collapsed) {

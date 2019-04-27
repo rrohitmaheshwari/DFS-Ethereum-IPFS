@@ -11,7 +11,8 @@ export const RESTService = {
     fetchInboxAddress,
     checkUserExists,
     register,
-    login
+    login,
+    getProfile,
 
 };
 
@@ -23,6 +24,11 @@ function login(data) {
 
 function fetchInboxAddress() {
     let url = api + '/fetchInboxAddress';
+    return axiosGet(url);
+}
+
+function getProfile() {
+    let url = api + '/getProfile';
     return axiosGet(url);
 }
 
