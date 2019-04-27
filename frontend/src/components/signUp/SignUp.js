@@ -7,6 +7,7 @@ import EthCrypto from 'eth-crypto';
 import InboxFactoryABI from '../../helper/build/InboxFactory.json';
 
 import { RESTService } from "../../api/api.js";
+import { history } from "../../helper/history";
 
 
 class SignUp extends Component {
@@ -108,7 +109,9 @@ class SignUp extends Component {
 
 
                     message.success('Registered Successfully');
-                    message.success('Inbox Address:' + inboxAddress);
+
+                    history.push('/login');
+
 
                     this.setState({loading: false});
                     //redirect to login
