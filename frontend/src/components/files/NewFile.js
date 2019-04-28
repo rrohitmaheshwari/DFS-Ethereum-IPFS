@@ -7,7 +7,7 @@ import { history } from "../../helper/history";
 import { simpleAction } from "../../actions/simpleAction";
 import { connect } from "react-redux";
 import { RESTService } from "../../api/api";
-
+import axios from 'axios';
 
 
 const Dragger = Upload.Dragger;
@@ -65,8 +65,15 @@ class NewFile extends Component {
                     console.log('accounts : ' + account[0]);
 
                     //*******await api call to check for valid email address and return its public key
-
-                    let receiverData = await RESTService.getAccount({email: values.email});
+                    let receiverData;
+                    try {
+                        receiverData = await RESTService.getAccount({email: values.email});
+                    }
+                    catch (err) {
+                        this.setState({loading: false});
+                        message.error('Invalid Email!');
+                        return;
+                    }
 
                     receiverData = receiverData.data;
                     console.log("receiverData");
@@ -77,49 +84,6 @@ class NewFile extends Component {
                     //*******if file is uploaded and we will get hash in return(or we could upload to ipfs from frontend only
 
 
-                    // let formData = new FormData();
-                    // formData.append('file', this.state.file);
-                    //
-                    // let receiverFileData = await RESTService.uploadFile(formData);
-                    // //
-                    //
-                    // try {
-                    //
-                    //
-                    //     var options = {
-                    //         method: 'POST',
-                    //         url: 'http://localhost:3001/uploadFile',
-                    //         headers:
-                    //             {
-                    //                 'cache-control': 'no-cache',
-                    //                 'content-type': 'multipart/form-data;'
-                    //             },
-                    //         formData:
-                    //             {
-                    //                 file:
-                    //                     {
-                    //                         value: JSON.stringify(this.state.file),
-                    //                         options:
-                    //                             {
-                    //                                 filename: this.state.fileName,
-                    //                                 contentType: null
-                    //                             }
-                    //                     },
-                    //                 'Content-Type': 'multipart/form-data'
-                    //             }
-                    //     };
-                    //
-                    //
-                    //
-                    //   await request(options, function (error, response, body) {
-                    //         if (error) throw new Error(error);
-                    //         console.log("succcess");
-                    //         console.log(body);
-                    //     });
-                    // }
-                    // catch (err) {
-                    //     console.log(err);
-                    // }
 
 
                     let formData = new FormData();
