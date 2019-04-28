@@ -6,6 +6,7 @@ import queryString from 'query-string';
 import web3 from "../../../web3";
 import { history } from "../../../helper/history";
 import EthCrypto from 'eth-crypto';
+import { RESTService } from "../../../api/api";
 
 
 const {Text} = Typography;
@@ -114,19 +115,33 @@ class FileDetailed extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
+        this.props.form.validateFields(async (err, values) => {
             if (!err) {
                 this.setState({loading: true});
                 console.log('Received values of form: ', values);
                 //await api call to get the file and the decrypt it using Private Key( values.PrivateKey )
+                let downloadedFile = await RESTService.downloadFile(this.state.hash);
+
+                const file = new Blob([downloadedFile.data]);
+                //Build a URL from the file
+
+                const fileURL = URL.createObjectURL(file);
+                //Open the URL on new Window
+                window.open(fileURL);
+
+                console.log('downloadedFile');
+                console.log(downloadedFile);
+                // const link = document.createElement('a');
+                // link.setAttribute('download', this.state.fileName);
+                // link.href = `http://localhost:3001/downloadFile?hash=${this.state.hash}`;
+                // document.body.appendChild(link);
+                // link.click();
+                // document.body.removeChild(link);
 
 
+                message.success('File Downloaded');
+                this.setState({loading: false});
 
-
-                setTimeout(function () {
-                    message.success('File Downloaded');
-                    this.setState({loading: false});
-                }.bind(this), 1000);
             }
             else {
                 this.setState({loading: false});

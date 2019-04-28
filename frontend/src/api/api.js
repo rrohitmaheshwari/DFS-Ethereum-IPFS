@@ -22,8 +22,8 @@ export const RESTService = {
 
 
 
-function downloadFile() {
-    let url = api + '/fetchInboxAddress';
+function downloadFile(hash) {
+    let url = api + '/downloadFile?hash='+hash;
     return axiosGet(url);
 }
 
