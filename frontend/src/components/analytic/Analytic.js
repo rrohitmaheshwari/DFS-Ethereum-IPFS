@@ -44,7 +44,6 @@ class Analytic extends Component {
         let fsaved = 0;
 
 
-        console.log(data);
         //filer file according to All File, Received Files, Sent Files, My Files
         for (let j = data.length - 1; j >= 0; j--) {
             if (data[j].toAddress !== selfAddress) {

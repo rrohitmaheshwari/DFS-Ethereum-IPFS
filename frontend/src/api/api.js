@@ -15,15 +15,14 @@ export const RESTService = {
     getProfile,
     getAccount,
     uploadFile,
-    downloadFile
+    downloadFile,
+    getProfileByAccount
 
 };
 
 
-
-
-function downloadFile(hash,fileName) {
-    let url = api + '/downloadFile?hash='+hash+'&fileName='+fileName;
+function downloadFile(hash, fileName) {
+    let url = api + '/downloadFile?hash=' + hash + '&fileName=' + fileName;
     return url;
 }
 
@@ -31,6 +30,11 @@ function downloadFile(hash,fileName) {
 function uploadFile(formData) {
     let url = api + '/uploadFile';
     return axiosPost(url, formData);
+}
+
+function getProfileByAccount(data) {
+    let url = api + '/getProfileByAccount';
+    return axiosPost(url, data);
 }
 
 

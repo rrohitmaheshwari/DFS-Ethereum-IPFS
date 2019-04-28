@@ -65,49 +65,54 @@ class FileDetailed extends Component {
 
     async componentDidMount() {
 
-        this.setState({loading: true});
-        let accounts = await web3.eth.getAccounts();
-        this.state.account = accounts[0];
+        try {
+            this.setState({loading: true});
+            let accounts = await web3.eth.getAccounts();
+            this.state.account = accounts[0];
 
 
-        //user email- get it from REDUX
-        let selfEmail = "self.email@gmail.com";
+            //user email- get it from REDUX
+            let selfdata = await RESTService.getProfile();
 
-        const {fromAddress, toAddress, hash, fileName, timeStamp, type} = queryString.parse(window.location.search);
-        this.setState({
-            fromAddress: fromAddress,
-            toAddress: toAddress,
-            hash: hash,
-            fileName: fileName,
-            timeStamp: timeStamp,
-            type: type
-        })
+            let selfEmail = selfdata.data.email;
 
 
-        //api call to get to or from email address(one is user's)
-        if (toAddress === fromAddress && toAddress === accounts[0]) {
-            this.setState({fromAddressEmail: selfEmail, toAddressEmail: selfEmail})
-        }
-        else if (accounts[0] === fromAddress) {
-            //call api to get email address for  toAddress
-            let toAddressEmail = "toAddressEmailfromAPI";
+            const {fromAddress, toAddress, hash, fileName, timeStamp, type} = queryString.parse(window.location.search);
+            this.setState({
+                fromAddress: fromAddress,
+                toAddress: toAddress,
+                hash: hash,
+                fileName: fileName,
+                timeStamp: timeStamp,
+                type: type
+            })
 
 
-            this.setState({fromAddressEmail: selfEmail, toAddressEmail: toAddressEmail})
-        } else if (accounts[0] === toAddress) {
-            //call api to get email address for  toAddress
-            let fromAddressEmail = "fromAddressEmailfromAPI";
+            //api call to get to or from email address(one is user's)
+            if (toAddress === fromAddress && toAddress === accounts[0]) {
+                this.setState({fromAddressEmail: selfEmail, toAddressEmail: selfEmail})
+            }
+            else if (accounts[0] === fromAddress) {
+                //call api to get email address for  toAddress
+                let toAddress = await RESTService.getProfileByAccount({account: this.state.toAddress});
+                let toAddressEmail = toAddress.data.email;
 
-            this.setState({fromAddressEmail: fromAddressEmail, toAddressEmail: selfEmail})
-        }
+                this.setState({fromAddressEmail: selfEmail, toAddressEmail: toAddressEmail})
+            } else if (accounts[0] === toAddress) {
+                //call api to get email address for  toAddress
+                let fromAddress = await RESTService.getProfileByAccount({account: this.state.fromAddress})
+                let fromAddressEmail = fromAddress.data.email;
 
+                this.setState({fromAddressEmail: fromAddressEmail, toAddressEmail: selfEmail})
+            }
 
-        //remove time out logic once API is integrated with the backend
-        setTimeout(function () {
 
             this.setState({loading: false});
-
-        }.bind(this), 1000);
+        }
+        catch (err) {
+            message.error("Error in Retrieving Records");
+            this.setState({loading: false});
+        }
 
 
     }

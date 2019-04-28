@@ -280,6 +280,38 @@ router.get('/getProfile', isLoggedIn, async function (req, res, next) {
 });
 
 
+router.post('/getProfileByAccount', isLoggedIn, async function (req, res, next) {
+
+    var findUser = () => {
+        return new Promise((resolve, reject) => {
+
+            req.db
+                .collection('users')
+                .find({address: req.body.account})
+                .limit(1)
+                .toArray(function (err, data) {
+                    err
+                        ? reject(err)
+                        : resolve(data);
+                    res
+                });
+        });
+    };
+
+    var result = await findUser();
+
+    let response = {};
+    response.firstName = result[0].firstName;
+    response.lastName = result[0].lastName;
+    response.email = result[0].email;
+
+
+    res.status(200);
+    res.send(response);
+
+});
+
+
 router.get('/downloadFile', isLoggedIn, function (req, res, next) {
 
 
