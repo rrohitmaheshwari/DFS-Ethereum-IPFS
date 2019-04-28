@@ -3,7 +3,7 @@
 }
 
 .fileCard:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.35) !important;
     opacity:0.9;
     cursor: pointer;
     animation: bounce 0.3s;
@@ -17,9 +17,12 @@
     }
 
     50% {
-        -webkit-transform: translateY(-2px);
-        transform: translateY(-2px);
+        -webkit-transform: translateY(-3px);
+        transform: translateY(-3px);
     }
+
+
+
 
 }
 

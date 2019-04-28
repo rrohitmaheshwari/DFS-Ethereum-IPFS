@@ -16,7 +16,7 @@ let gridStyle = {
 };
 
 const gridStyleSent = {
-    boxShadow: '0 2px 8px rgba(24, 144, 255, 0.35)',
+    boxShadow: '0 3px 8px rgba(24, 144, 255, 0.65)',
 };
 
 
@@ -27,7 +27,7 @@ const cardSent = {
 
 
 const gridStyleReceived = {
-    boxShadow: '0 2px 8px rgba(76, 173, 129, 0.35)',
+    boxShadow: '0 3px 8px rgba(76, 173, 129, 0.65)',
 };
 
 const cardReceived = {
@@ -37,7 +37,7 @@ const cardReceived = {
 
 
 const gridStyleSelf = {
-    boxShadow: '0 2px 8px rgba(250, 203, 20, 0.45)',
+    boxShadow: '0 3px 8px rgba(250, 203, 20, 0.65)',
 };
 
 
