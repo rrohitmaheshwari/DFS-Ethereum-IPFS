@@ -51,7 +51,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
+    let url= process.env.FRONTEND_URL | '*';
+    res.header('Access-Control-Allow-Origin', url);
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
 });
