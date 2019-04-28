@@ -120,23 +120,11 @@ class FileDetailed extends Component {
                 this.setState({loading: true});
                 console.log('Received values of form: ', values);
                 //await api call to get the file and the decrypt it using Private Key( values.PrivateKey )
-                let downloadedFile = await RESTService.downloadFile(this.state.hash);
+                let downloadedFileURL = RESTService.downloadFile(this.state.hash, this.state.fileName);
 
-                const file = new Blob([downloadedFile.data]);
-                //Build a URL from the file
-
-                const fileURL = URL.createObjectURL(file);
-                //Open the URL on new Window
-                window.open(fileURL);
-
-                console.log('downloadedFile');
-                console.log(downloadedFile);
-                // const link = document.createElement('a');
-                // link.setAttribute('download', this.state.fileName);
-                // link.href = `http://localhost:3001/downloadFile?hash=${this.state.hash}`;
-                // document.body.appendChild(link);
-                // link.click();
-                // document.body.removeChild(link);
+                const link = document.getElementById('dlink');
+                link.href = downloadedFileURL;
+                link.click();
 
 
                 message.success('File Downloaded');
@@ -350,6 +338,7 @@ class FileDetailed extends Component {
                                 </Form.Item>
 
                                 }
+                                <a id="dlink" href="" download={this.state.fileName}></a>
 
                             </Form>
                         </Col>

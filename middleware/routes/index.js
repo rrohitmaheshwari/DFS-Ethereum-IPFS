@@ -197,8 +197,8 @@ router.post('/getAccount', isLoggedIn, async function (req, res, next) {
 });
 
 
-router.post('/uploadFile',isLoggedIn, function (req, res, next) {
-    console.log("Server trying to upload... " )
+router.post('/uploadFile', isLoggedIn, function (req, res, next) {
+    console.log("Server trying to upload... ")
     console.log("Server trying to upload... " + req)
     console.log(req);
     console.log("end");
@@ -281,8 +281,7 @@ router.get('/getProfile', isLoggedIn, async function (req, res, next) {
 
 
 router.get('/downloadFile', isLoggedIn, function (req, res, next) {
-
-    console.log(req.query.hash);
+    
 
     try {
 
@@ -294,14 +293,17 @@ router.get('/downloadFile', isLoggedIn, function (req, res, next) {
             url: `https://ipfs.infura.io:5001/api/v0/block/get?arg=${req.query.hash}`,
             headers:
                 {
-                    'cache-control': 'no-cache'
+                    'cache-control': 'no-cache',
+
                 },
         };
 
         request(options, function (error, response, body) {
             if (error) throw new Error(error);
-            console.log("succcess");
-            let file = Buffer.from(JSON.parse(body).data);
+            let fProc = JSON.parse(body);
+            let file = Buffer.from(fProc.data);
+            res.setHeader('Content-disposition', 'attachment; filename=' + req.query.fileName);
+            res.setHeader('Content-type', fProc.mimetype);
             res.status(200);
             res.send(file);
         });

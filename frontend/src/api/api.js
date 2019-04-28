@@ -22,9 +22,9 @@ export const RESTService = {
 
 
 
-function downloadFile(hash) {
-    let url = api + '/downloadFile?hash='+hash;
-    return axiosGet(url);
+function downloadFile(hash,fileName) {
+    let url = api + '/downloadFile?hash='+hash+'&fileName='+fileName;
+    return url;
 }
 
 
