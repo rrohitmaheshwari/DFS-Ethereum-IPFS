@@ -281,7 +281,7 @@ router.get('/getProfile', isLoggedIn, async function (req, res, next) {
 
 
 router.get('/downloadFile', isLoggedIn, function (req, res, next) {
-    
+
 
     try {
 

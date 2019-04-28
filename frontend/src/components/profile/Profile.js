@@ -105,6 +105,7 @@ class Profile extends Component {
                                     <TextArea
                                         placeholder="Public Key"
                                         value={publicKey}
+                                        autosize={{minRows: 3}}
                                         disabled={true}/>
                                         </Form.Item>
 

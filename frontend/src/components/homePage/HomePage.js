@@ -127,7 +127,7 @@ class HomePage extends Component {
             <div className="HomePage">
 
                 <Layout style={{minHeight: '100vh'}}>
-                    <Header style={{position: 'fixed', width: '100%', zIndex: 1, background: '#fff'}} theme='light'>
+                    <Header style={{position: 'fixed', width: '100%', zIndex: 1}} theme='dark'>
 
                         {/*<Avatar shape="square" size={64} icon="user"/>*/}
                         <Icon type="gitlab" style={{fontSize: '60px', marginLeft: '17px', color: '#1890ff'}}/>
@@ -140,7 +140,6 @@ class HomePage extends Component {
                     </Header>
                     <Layout>
                         <Sider width={200} style={{
-                            background: '#fff',
                             overflow: 'auto',
                             height: '100vh',
                             position: 'fixed',
@@ -150,7 +149,7 @@ class HomePage extends Component {
                                collapsible
                                collapsed={this.state.collapsed}
                                onCollapse={this.onCollapse}
-                               theme='light'
+                               theme='dark'
                         >
 
 
@@ -160,6 +159,7 @@ class HomePage extends Component {
                                 mode="inline"
                                 selectedKeys={[selectedKey]}
                                 defaultOpenKeys={['sub1']}
+                                theme='dark'
                             >
                                 <SubMenu key="sub1" title={<span><Icon type="desktop"/><span>Files</span></span>}>
 
@@ -175,9 +175,16 @@ class HomePage extends Component {
                                     type="radar-chart"/><span>Dashboard</span></span></Menu.Item>
                             </Menu>
                         </Sider>
-                        <Layout style={{padding: '25px 24px 24px', marginLeft: marginLeft, marginTop: 64}}>
+                        <Layout style={{
+                            background: 'linear-gradient(to top, rgb(0, 21, 40) 0%, rgb(134, 197, 247) 100%)',
+                            padding: '25px 24px 24px',
+                            marginLeft: marginLeft,
+                            marginTop: 64
+                        }}>
                             <Content style={{
-                                background: '#fff', padding: 24, minHeight: 280, margin: '0 16px'
+                                padding: 24,
+                                minHeight: 280,
+                                margin: '0 16px'
                             }}
 
                             >
@@ -216,7 +223,10 @@ class HomePage extends Component {
                                 </Router>
 
                             </Content>
-                            <Footer style={{textAlign: 'center'}}>
+                            <Footer style={{
+                                textAlign: 'center', background: 'none',
+                                color: 'white'
+                            }}>
                                 Distributed File System using Blockchain © San Jose State University
                             </Footer>
                         </Layout>
