@@ -50,12 +50,12 @@ app.use(fileUpload());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-app.use((req, res, next) => {
-    let url= process.env.FRONTEND_URL | '*';
-    res.header('Access-Control-Allow-Origin', url);
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    next();
-});
+// app.use((req, res, next) => {
+//     let url= process.env.FRONTEND_URL | '*';
+//     res.header('Access-Control-Allow-Origin', url);
+//     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+//     next();
+// });
 
 
 // catch 404 and forward to error handler
