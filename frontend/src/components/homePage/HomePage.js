@@ -13,6 +13,7 @@ import FileDetailed from "../files/helper/FileDetailed";
 import web3 from '../../web3';
 import { connect } from "react-redux";
 import { simpleAction } from "../../actions/simpleAction";
+import { RESTService } from "../../api/api";
 
 const SubMenu = Menu.SubMenu;
 
@@ -73,9 +74,17 @@ class HomePage extends Component {
         }
     };
 
-    logoutButton = () => {
+    logoutButton = async () => {
 
-        message.success('Logged out Successfully');
+        try {
+            await RESTService.logout();
+            message.success('Logged out Successfully');
+        }
+        catch (err) {
+            message.error("User not logged in");
+        }
+
+
         history.push('/Login');
 
     };

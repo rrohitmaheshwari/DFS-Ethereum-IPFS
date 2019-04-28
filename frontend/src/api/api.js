@@ -16,9 +16,15 @@ export const RESTService = {
     getAccount,
     uploadFile,
     downloadFile,
-    getProfileByAccount
+    getProfileByAccount,
+    logout
 
 };
+
+function logout() {
+    let url = api + '/logout';
+    return axiosGet(url);
+}
 
 
 function downloadFile(hash, fileName) {

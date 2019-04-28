@@ -56,6 +56,7 @@ router.post('/register', async (req, res, next) => {
 /* POST call for Login user. */
 router.post('/login', async (req, res, next) => {
     logger.info("[POST]/login", null, 2);
+    console.log(req.body);
 
     var findUser = () => {
         return new Promise((resolve, reject) => {
