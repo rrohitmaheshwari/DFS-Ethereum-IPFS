@@ -240,7 +240,7 @@ router.post('/uploadFile', isLoggedIn, function (req, res, next) {
     catch (err) {
         console.log(err);
         res.status(403);
-        res.send({msg: "err"});
+        res.send({msg: "Error in Uploading File"});
     }
 
 
