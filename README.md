@@ -2,7 +2,7 @@
 Distributed File System over Ethereum blockchain and Interplanetary File System
 
 ### Frontend
-React based
+React and Redux based front end.
 
 To Run:
 
@@ -17,7 +17,7 @@ npm start
 
 ### Middleware
 Node.js, Epress.js based server. 
-Also contains deployment scripts for solidity based Smart contract
+Also contains deployment scripts for solidity based Smart contract.
 
 
 To Run:
