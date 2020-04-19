@@ -16,7 +16,7 @@ npm start
 ```
 
 ### Middleware
-Node.js, Epress.js based server. 
+Node.js, Express.js based server. 
 Also contains deployment scripts for solidity based Smart contract.
 
 
