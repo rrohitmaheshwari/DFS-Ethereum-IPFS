@@ -33,5 +33,5 @@ npm start
 ### Backend
 InterPlanetry File System & MongoDB
 
-IPFS is coneected by Infura.io API and MongoDB is deployed at mlab.com
+IPFS is connected by Infura.io API and MongoDB is deployed at mlab.com
 
